@@ -18,6 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->boolean('is_admin')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
@@ -28,6 +29,7 @@ return new class extends Migration
             User::factory()->create([
                 'name' => 'Test User',
                 'email' => 'test@example.com',
+                'is_admin' => true,
             ]);
         }
 

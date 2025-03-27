@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Models\User;
+use Filament\Http\Responses\Auth\Contracts\LoginResponse;
+use Filament\Http\Responses\Auth\Contracts\LogoutResponse;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -14,6 +16,12 @@ use Illuminate\Support\ServiceProvider;
 
 final class AppServiceProvider extends ServiceProvider
 {
+
+    public $singletons = [
+        LoginResponse::class => \App\Http\Responses\LoginResponse::class,
+        LogoutResponse::class => \App\Http\Responses\LogoutResponse::class,
+    ];
+
     /**
      * Register any application services.
      */
