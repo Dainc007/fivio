@@ -13,7 +13,11 @@ class LoginResponse extends BaseLoginResponse
     public function toResponse($request): RedirectResponse|Redirector
     {
         if (auth()->user()->is_admin) {
-            return redirect()->to(Dashboard::getUrl(panel: 'admin'));
+            return redirect()->route('filament.admin.resources.orders.index');
+        }
+
+        if (auth()->user()) {
+            return redirect()->route('filament.auth.resources.orders.index');
         }
 
         return parent::toResponse($request);

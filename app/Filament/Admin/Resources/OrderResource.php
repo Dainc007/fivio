@@ -4,7 +4,10 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\OfferResource\Pages;
 use App\Filament\Admin\Resources\OfferResource\RelationManagers;
+use App\Models\Category;
 use App\Models\Offer;
+use App\Models\Product;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,6 +15,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Mail;
+use Psy\Util\Str;
 
 class OfferResource extends Resource
 {
@@ -26,6 +31,7 @@ class OfferResource extends Resource
             ->schema([
                 Forms\Components\Select::make('product_id')
                     ->searchable()
+                    ->options(Product::all()->pluck('name', 'id'))
                     ->relationship('product', 'name')
                     ->required()
                     ->createOptionModalHeading('Create New Product')
@@ -41,6 +47,7 @@ class OfferResource extends Resource
                             ->label('Product Price'),
                         Forms\Components\Select::make('category_id')
                             ->searchable()
+                            ->options(Category::all()->pluck('name', 'id'))
                             ->relationship('category', 'name')
                             ->required()
                             ->createOptionModalHeading('Create New Category')
@@ -56,50 +63,37 @@ class OfferResource extends Resource
                     ->numeric(),
                 Forms\Components\TextInput::make('unit')
                     ->required(),
-                Forms\Components\DatePicker::make('delivery_date')
-                    ->required(),
+                Forms\Components\DatePicker::make('delivery_date'),
 
-                Forms\Components\FileUpload::make('files')
+                Forms\Components\FileUpload::make('attachment')
                     ->multiple()
-                    ->directory('files')
-                    ->visibility('public')
-                    ->afterStateUpdated(function ($state, $set) {
-                        // Optional: you can add custom logic here
-                    })
-                    ->saveUploadedFileUsing(function ($file, $get) {
-                        $filename = $file->hashName('files');
-                        $path = $file->storeAs('files', $filename, 'public');
+                    ->openable()
+                    ->downloadable()
+                    ->deletable()
+                    ->visibility('private')
+                    ->directory('attachments')
+                    ->disk('public')
+                    ->maxFiles(5)
+                    ->preserveFilenames()
+                    ->maxParallelUploads(3),
 
-                        return [
-                            'name' => $file->getClientOriginalName(),
-                            'path' => $path,
-                            'mime_type' => $file->getMimeType(),
-                            'size' => $file->getSize(),
-                            'collection' => 'files'
-                        ];
-                    }),
-
-                Forms\Components\Select::make('address_id')
-                    ->label('Offer Address')
-                    ->searchable()
-                    ->createOptionForm([
-                        Forms\Components\TextInput::make('street')
-                            ->label('Street Address'),
-                        Forms\Components\TextInput::make('street_additional')
-                            ->label('Additional Address Line'),
-                        Forms\Components\TextInput::make('city')
-                            ->label('City'),
-                        Forms\Components\TextInput::make('postal_code')
-                            ->label('Postal Code'),
-                        Forms\Components\TextInput::make('country')
-                            ->label('Country'),
-                    ])
-                    ->createOptionModalHeading('Create New Address')
-                    ->helperText('Select an existing address or create a new one')
-                    ->reactive()
-                    ->afterStateUpdated(function ($state, $set) {
-                        // Optional: additional logic after address selection
-                    }),
+//                Forms\Components\Select::make('address_id')
+//                    ->label('Offer Address')
+//                    ->searchable()
+//                    ->createOptionForm([
+//                        Forms\Components\TextInput::make('street')
+//                            ->label('Street Address'),
+//                        Forms\Components\TextInput::make('street_additional')
+//                            ->label('Additional Address Line'),
+//                        Forms\Components\TextInput::make('city')
+//                            ->label('City'),
+//                        Forms\Components\TextInput::make('postal_code')
+//                            ->label('Postal Code'),
+//                        Forms\Components\TextInput::make('country')
+//                            ->label('Country'),
+//                    ])
+//                    ->createOptionModalHeading('Create New Address')
+//                    ->helperText('Select an existing address or create a new one')
             ]);
     }
 
@@ -152,5 +146,4 @@ class OfferResource extends Resource
     {
         return static::getModel()::count();
     }
-
 }

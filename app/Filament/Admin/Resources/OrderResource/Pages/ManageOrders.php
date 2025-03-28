@@ -18,18 +18,4 @@ class ManageOffers extends ManageRecords
             Actions\CreateAction::make(),
         ];
     }
-
-    protected function afterCreate()
-    {
-        $users = User::all();
-        foreach ($users as $user) {
-            Mail::to($user->email)
-                ->send(
-                    new GenericEmail(
-                        subject: 'Test',
-                        body: 'Test',
-                    )
-                );
-        }
-    }
 }
