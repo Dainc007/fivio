@@ -27,17 +27,22 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->translateLabel()
                     ->required(),
                 Forms\Components\TextInput::make('email')
+                    ->translateLabel()
                     ->email()
                     ->required(),
-                Forms\Components\TextInput::make('company_name'),
-                Forms\Components\TextInput::make('tax_number'),
-                Forms\Components\Toggle::make('has_access')
+                Forms\Components\TextInput::make('company_name')->translateLabel()
+                ,
+                Forms\Components\TextInput::make('tax_number')->translateLabel()
+                ,
+                Forms\Components\Toggle::make('has_access')->translateLabel()
                     ->required(),
                 Forms\Components\Toggle::make('is_admin')
                     ->required(),
-                Forms\Components\TextInput::make('password')
+                Forms\Components\TextInput::make('password')->translateLabel()
+                    ->visibleOn('create')
                     ->columnSpanFull()
                     ->password()
                     ->required(),
@@ -47,27 +52,41 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->translateLabel()
+                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('company_name')
-                ->searchable(),
-                Tables\Columns\TextColumn::make('tax_number')
-                ->searchable(),
-                Tables\Columns\TextColumn::make('email')
+                    ->alignCenter()
+                    ->translateLabel()
                     ->searchable(),
-                Tables\Columns\IconColumn::make('has_access')
-                    ->boolean(),
-                Tables\Columns\IconColumn::make('is_admin')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
+                Tables\Columns\TextColumn::make('tax_number')
+                    ->alignCenter()
+                    ->translateLabel()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->alignCenter()
+                    ->translateLabel()
+                    ->searchable(),
+
+                Tables\Columns\ToggleColumn::make('has_access')
+                    ->translateLabel()
+                    ->alignCenter()
                     ->sortable(),
+                Tables\Columns\IconColumn::make('is_admin')
+                    ->translateLabel()
+                    ->alignCenter()
+                    ->boolean()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

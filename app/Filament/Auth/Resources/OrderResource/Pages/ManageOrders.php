@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Admin\Resources\OrderResource\Pages;
+namespace App\Filament\Auth\Resources\OrderResource\Pages;
 
-use App\Filament\Admin\Resources\OrderResource;
+use App\Filament\Auth\Resources\OrderResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
@@ -13,7 +13,7 @@ class ManageOrders extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+//            Actions\CreateAction::make(),
         ];
     }
 }

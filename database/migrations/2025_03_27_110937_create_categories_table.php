@@ -18,7 +18,25 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        $categoryNames = [
+            'Superfoods',
+            'Słodkie przekąski',
+            'Suszone owoce',
+            'Ryż',
+            'Rośliny strączkowe',
+            'Przyprawy',
+            'Pestki, nasiona, ziarna',
+            'Orzechy',
+            'Mąki',
+            'Kasze',
+            'Do pieczenia',
+            'Cukry i słodziki',
+            'Płatki',
+            'Kawy',
+        ];
 
+        $categories = array_map(fn($name) => ['name' => $name], $categoryNames);
+        Category::insert($categories);
     }
 
     /**

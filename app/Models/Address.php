@@ -12,9 +12,9 @@ class Address extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function offer(): BelongsTo
+    public function order(): BelongsTo
     {
-        return $this->belongsTo(Offer::class);
+        return $this->belongsTo(Order::class);
     }
 
     public function getFullAddressAttribute(): string

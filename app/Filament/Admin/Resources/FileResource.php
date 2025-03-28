@@ -19,6 +19,7 @@ class FileResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-document';
     protected static ?int $navigationSort = 6;
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
@@ -47,30 +48,51 @@ class FileResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->translateLabel()
+                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('path')
+                    ->translateLabel()
+                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('mime_type')
+                    ->translateLabel()
+                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('size')
+                    ->translateLabel()
+                    ->alignCenter()
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('disk')
+                    ->translateLabel()
+                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('collection')
+                    ->translateLabel()
+                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('fileable_type')
+                    ->translateLabel()
+                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('fileable_id')
+                    ->translateLabel()
+                    ->alignCenter()
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->translateLabel()
+                    ->alignCenter()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->translateLabel()
+                    ->alignCenter()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
