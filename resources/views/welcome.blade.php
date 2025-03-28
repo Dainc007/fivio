@@ -42,7 +42,7 @@
     <header class="bg-white border-b border-gray-200">
         <div class="container mx-auto px-4 py-4">
             <div class="flex justify-between items-center">
-                <h1 class="text-2xl font-semibold text-green-700">Intact Balance</h1>
+                <h1 class="text-2xl font-semibold text-green-700">{{ __('welcome.header_title') }}</h1>
                 <!-- Mobile menu button -->
                 <button class="md:hidden" onclick="toggleMobileMenu()">
                     <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -53,13 +53,9 @@
                 <!-- Desktop navigation -->
                 <div class="hidden md:flex gap-4">
                     <a href="{{route('filament.auth.auth.register')}}"
-                       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">Zarejestruj
-                        konto</a>
+                       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">{{ __('welcome.register_button') }}</a>
                     <a href="{{route('filament.auth.auth.login')}}"
-                       class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
-                        Zaloguj
-                        się
-                    </a>
+                       class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">{{ __('welcome.login_button') }}</a>
                 </div>
             </div>
         </div>
@@ -72,11 +68,9 @@
         <div class="container mx-auto px-4">
             <div class="flex flex-col gap-4">
                 <a href="#"
-                   class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">Zarejestruj
-                    konto</a>
+                   class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">{{ __('welcome.register_button') }}</a>
                 <a href="#"
-                   class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">Zaloguj
-                    się</a>
+                   class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">{{ __('welcome.login_button') }}</a>
             </div>
         </div>
     </div>
@@ -89,8 +83,8 @@
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                     <div class="p-8">
                         <div class="flex flex-col items-center text-center">
-                            <h1 class="text-4xl font-bold text-emerald-700 mb-4">Witaj w Strefie Dostawcy Intact Balance</h1>
-                            <p class="text-xl text-gray-600 mb-8">Platforma B2B dla dostawców surowców i składników</p>
+                            <h1 class="text-4xl font-bold text-emerald-700 mb-4">{{ __('welcome.welcome_title') }}</h1>
+                            <p class="text-xl text-gray-600 mb-8">{{ __('welcome.welcome_description') }}</p>
                         </div>
                     </div>
                 </div>
@@ -100,14 +94,14 @@
             <div class="mb-16">
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                     <div class="p-6">
-                        <h2 class="text-3xl font-bold text-center text-emerald-700 mb-8">Dlaczego warto do nas dołączyć?</h2>
+                        <h2 class="text-3xl font-bold text-center text-emerald-700 mb-8">{{ __('welcome.why_join_title') }}</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             <!-- Card 1 -->
                             <div class="bg-white rounded-lg overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                                 <div class="p-6 flex justify-between items-start">
                                     <div>
-                                        <h3 class="text-xl font-semibold text-emerald-700 mb-2">Prosta rejestracja</h3>
-                                        <p class="text-gray-600">Zarejestruj się w naszym systemie B2B i sprzedawaj swoje produkty tak prosto, jak nigdy dotąd.</p>
+                                        <h3 class="text-xl font-semibold text-emerald-700 mb-2">{{ __('welcome.card_1_title') }}</h3>
+                                        <p class="text-gray-600">{{ __('welcome.card_1_description') }}</p>
                                     </div>
                                     <div class="feature-icon">
                                         <svg class="w-9 h-9 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,8 +116,8 @@
                             <div class="bg-white rounded-lg overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                                 <div class="p-6 flex justify-between items-start">
                                     <div>
-                                        <h3 class="text-xl font-semibold text-amber-700 mb-2">Aktualne zapotrzebowanie</h3>
-                                        <p class="text-gray-600">Po rejestracji uzyskasz dostęp do aktualnych zapotrzebowań na surowce. To doskonała okazja, aby przedstawić swoją ofertę i nawiązać długoterminową współpracę.</p>
+                                        <h3 class="text-xl font-semibold text-amber-700 mb-2">{{ __('welcome.card_2_title') }}</h3>
+                                        <p class="text-gray-600">{{ __('welcome.card_2_description') }}</p>
                                     </div>
                                     <div class="feature-icon">
                                         <svg class="w-9 h-9 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -138,8 +132,8 @@
                             <div class="bg-white rounded-lg overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                                 <div class="p-6 flex justify-between items-start">
                                     <div>
-                                        <h3 class="text-xl font-semibold text-blue-700 mb-2">Intuicyjny system</h3>
-                                        <p class="text-gray-600">Nasz intuicyjny system umożliwia szybkie i łatwe składanie ofert, co pozwoli zaoszczędzić Twój cenny czas.</p>
+                                        <h3 class="text-xl font-semibold text-blue-700 mb-2">{{ __('welcome.card_3_title') }}</h3>
+                                        <p class="text-gray-600">{{ __('welcome.card_3_description') }}</p>
                                     </div>
                                     <div class="feature-icon">
                                         <svg class="w-9 h-9 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -158,14 +152,14 @@
             <div class="mb-16">
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                     <div class="p-6">
-                        <h2 class="text-3xl font-bold text-center text-emerald-700 mb-8">Jak przebiega współpraca?</h2>
+                        <h2 class="text-3xl font-bold text-center text-emerald-700 mb-8">{{ __('welcome.cooperation_title') }}</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             <!-- Card 1 -->
                             <div class="bg-white rounded-lg overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                                 <div class="p-6 flex justify-between items-start">
                                     <div>
-                                        <h3 class="text-xl font-semibold text-orange-700 mb-2">Prosty proces</h3>
-                                        <p class="text-gray-600">My zgłaszamy zapotrzebowanie w danych kategoriach – Ty składasz jednym kliknięciem swoją ofertę i już! Kiedy upłynie czas składania ofert, dostaniesz informację o wyniku.</p>
+                                        <h3 class="text-xl font-semibold text-orange-700 mb-2">{{ __('welcome.cooperation_card_1_title') }}</h3>
+                                        <p class="text-gray-600">{{ __('welcome.cooperation_card_1_description') }}</p>
                                     </div>
                                     <div class="feature-icon">
                                         <svg class="w-9 h-9 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -179,8 +173,8 @@
                             <div class="bg-white rounded-lg overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                                 <div class="p-6 flex justify-between items-start">
                                     <div>
-                                        <h3 class="text-xl font-semibold text-red-700 mb-2">Pełne wsparcie</h3>
-                                        <p class="text-gray-600">Nasz zespół jest zawsze gotowy, aby pomóc w razie pytań czy wątpliwości, zapewniając pełne wsparcie na każdym etapie współpracy.</p>
+                                        <h3 class="text-xl font-semibold text-red-700 mb-2">{{ __('welcome.cooperation_card_2_title') }}</h3>
+                                        <p class="text-gray-600">{{ __('welcome.cooperation_card_2_description') }}</p>
                                     </div>
                                     <div class="feature-icon">
                                         <svg class="w-9 h-9 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -194,8 +188,8 @@
                             <div class="bg-white rounded-lg overflow-hidden transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                                 <div class="p-6 flex justify-between items-start">
                                     <div>
-                                        <h3 class="text-xl font-semibold text-teal-700 mb-2">Dołącz teraz</h3>
-                                        <p class="text-gray-600">Nie czekaj – dołącz do Strefy Dostawcy już dziś i zacznij korzystać z możliwości, jakie daje nasz system B2B. Razem możemy osiągnąć więcej!</p>
+                                        <h3 class="text-xl font-semibold text-teal-700 mb-2">{{ __('welcome.cooperation_card_3_title') }}</h3>
+                                        <p class="text-gray-600">{{ __('welcome.cooperation_card_3_description') }}</p>
                                     </div>
                                     <div class="feature-icon">
                                         <svg class="w-9 h-9 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -213,46 +207,46 @@
             <div class="mt-8">
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                     <div class="p-6">
-                        <h2 class="text-3xl font-bold text-center text-emerald-700 mb-8">Nasze kategorie produktów</h2>
+                        <h2 class="text-3xl font-bold text-center text-emerald-700 mb-8">{{ __('welcome.products_title') }}</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             <div class="bg-white rounded-lg shadow-sm overflow-hidden">
                                 <div class="p-4 border-b border-gray-200">
-                                    <h3 class="text-base font-medium text-gray-900">Orzechy</h3>
+                                    <h3 class="text-base font-medium text-gray-900">{{ __('welcome.product_nuts') }}</h3>
                                 </div>
                                 <div class="p-4">
-                                    <p class="text-gray-600">Migdały, włoskie, ziemne, nerkowce, pekan i wiele innych.</p>
+                                    <p class="text-gray-600">{{ __('welcome.product_nuts_description') }}</p>
                                 </div>
                             </div>
                             <div class="bg-white rounded-lg shadow-sm overflow-hidden">
                                 <div class="p-4 border-b border-gray-200">
-                                    <h3 class="text-base font-medium text-gray-900">Mąki</h3>
+                                    <h3 class="text-base font-medium text-gray-900">{{ __('welcome.product_flours') }}</h3>
                                 </div>
                                 <div class="p-4">
-                                    <p class="text-gray-600">Ryżowe, gryczane, kokosowe i inne.</p>
+                                    <p class="text-gray-600">{{ __('welcome.product_flours_description') }}</p>
                                 </div>
                             </div>
                             <div class="bg-white rounded-lg shadow-sm overflow-hidden">
                                 <div class="p-4 border-b border-gray-200">
-                                    <h3 class="text-base font-medium text-gray-900">Słodziki</h3>
+                                    <h3 class="text-base font-medium text-gray-900">{{ __('welcome.product_sweeteners') }}</h3>
                                 </div>
                                 <div class="p-4">
-                                    <p class="text-gray-600">Erytrol, ksylitol, stewia i inne zdrowe alternatywy.</p>
+                                    <p class="text-gray-600">{{ __('welcome.product_sweeteners_description') }}</p>
                                 </div>
                             </div>
                             <div class="bg-white rounded-lg shadow-sm overflow-hidden">
                                 <div class="p-4 border-b border-gray-200">
-                                    <h3 class="text-base font-medium text-gray-900">Strączki</h3>
+                                    <h3 class="text-base font-medium text-gray-900">{{ __('welcome.product_legumes') }}</h3>
                                 </div>
                                 <div class="p-4">
-                                    <p class="text-gray-600">Soczewica, fasola, ciecierzyca, groch.</p>
+                                    <p class="text-gray-600">{{ __('welcome.product_legumes_description') }}</p>
                                 </div>
                             </div>
                             <div class="bg-white rounded-lg shadow-sm overflow-hidden">
                                 <div class="p-4 border-b border-gray-200">
-                                    <h3 class="text-base font-medium text-gray-900">Superfoods</h3>
+                                    <h3 class="text-base font-medium text-gray-900">{{ __('welcome.product_superfoods') }}</h3>
                                 </div>
                                 <div class="p-4">
-                                    <p class="text-gray-600">Chia, amarantus, jagody goji i inne.</p>
+                                    <p class="text-gray-600">{{ __('welcome.product_superfoods_description') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -267,20 +261,20 @@
         <div class="container mx-auto px-4 py-4">
             <div class="flex justify-end gap-2">
                 <div class="w-64">
-                    <h3 class="text-sm font-semibold text-emerald-700 mb-2">Intact Balance Sp. z o.o.</h3>
-                    <p class="text-xs text-gray-600">Gnojnik 26, 32-864 Gnojnik</p>
-                    <p class="text-xs text-gray-600">tel.: +48 781 494 806</p>
-                    <p class="text-xs text-gray-600">e-mail: zakupy@intact-balance.eu</p>
+                    <h3 class="text-sm font-semibold text-emerald-700 mb-2">{{ __('welcome.footer_title') }}</h3>
+                    <p class="text-xs text-gray-600">{{ __('welcome.footer_address') }}</p>
+                    <p class="text-xs text-gray-600">{{ __('welcome.footer_phone') }}</p>
+                    <p class="text-xs text-gray-600">{{ __('welcome.footer_email') }}</p>
                 </div>
                 <div class="w-64">
-                    <h3 class="text-sm font-semibold text-emerald-700 mb-2">Rejestracja firmy</h3>
-                    <p class="text-xs text-gray-600">KRS: 0000773091</p>
-                    <p class="text-xs text-gray-600">Regon: 382621884</p>
-                    <p class="text-xs text-gray-600">NIP: 8691994182</p>
+                    <h3 class="text-sm font-semibold text-emerald-700 mb-2">{{ __('welcome.footer_registration_title') }}</h3>
+                    <p class="text-xs text-gray-600">{{ __('welcome.footer_krs') }}</p>
+                    <p class="text-xs text-gray-600">{{ __('welcome.footer_regon') }}</p>
+                    <p class="text-xs text-gray-600">{{ __('welcome.footer_nip') }}</p>
                 </div>
             </div>
             <div class="border-t border-gray-200 mt-4 pt-4 text-center text-xs text-gray-600">
-                <p>&copy; {{ date('Y') }} FIVIO. Wszelkie prawa zastrzeżone.</p>
+                <p>&copy; {{ date('Y') }} {{ __('welcome.footer_copyright') }}.</p>
             </div>
         </div>
     </footer>
