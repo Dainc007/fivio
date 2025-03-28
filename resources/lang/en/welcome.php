@@ -4,10 +4,12 @@ return [
     'header_title' => 'Intact Balance',
     'register_button' => 'Register account',
     'login_button' => 'Log in',
-    
+    'panel' => 'Go to Panel',
+
+
     'welcome_title' => 'Welcome to Intact Balance Supplier Zone',
     'welcome_description' => 'B2B Platform for suppliers of raw materials and ingredients',
-    
+
     'why_join_title' => 'Why join us?',
     'card_1_title' => 'Simple registration',
     'card_1_description' => 'Register in our B2B system and sell your products as easily as never before.',
@@ -15,7 +17,7 @@ return [
     'card_2_description' => 'After registration, you will gain access to current demand for raw materials. This is a great opportunity to present your offer and establish long-term cooperation.',
     'card_3_title' => 'Intuitive system',
     'card_3_description' => 'Our intuitive system allows for quick and easy offer submission, saving you valuable time.',
-    
+
     'cooperation_title' => 'How does cooperation work?',
     'cooperation_card_1_title' => 'Simple process',
     'cooperation_card_1_description' => 'We report demand in certain categories - You submit your offer with one click and that\'s it! When the offer submission time expires, you will receive information about the result.',
@@ -23,7 +25,7 @@ return [
     'cooperation_card_2_description' => 'Our team is always ready to help with any questions or doubts, providing full support at every stage of cooperation.',
     'cooperation_card_3_title' => 'Join now',
     'cooperation_card_3_description' => 'Don\'t wait - join the Supplier Zone today and start taking advantage of the opportunities offered by our B2B system. Together we can achieve more!',
-    
+
     'products_title' => 'Our product categories',
     'product_nuts' => 'Nuts',
     'product_nuts_description' => 'Almonds, walnuts, peanuts, hazelnuts, pecans and many others.',
@@ -35,7 +37,7 @@ return [
     'product_legumes_description' => 'Lentils, beans, chickpeas, peas.',
     'product_superfoods' => 'Superfoods',
     'product_superfoods_description' => 'Chia, amaranth, goji berries and others.',
-    
+
     'footer_title' => 'Intact Balance Sp. z o.o.',
     'footer_address' => 'Gnojnik 26, 32-864 Gnojnik',
     'footer_phone' => 'tel.: +48 781 494 806',

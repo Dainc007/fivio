@@ -18,6 +18,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('tax_number')->nullable();
+            $table->string('company_name')->nullable();
+            $table->boolean('has_access')->default(false);
             $table->boolean('is_admin')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -30,6 +33,7 @@ return new class extends Migration
                 'name' => 'Test User',
                 'email' => 'test@example.com',
                 'is_admin' => true,
+                'has_access' => true,
             ]);
         }
 

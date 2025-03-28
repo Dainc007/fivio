@@ -10,9 +10,9 @@ class RedirectToProperPanelMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->check() && auth()->user()->is_admin) {
-            return redirect()->to(Dashboard::getUrl(panel: 'admin'));
-        }
+//        if (auth()->user()->is_admin) {
+//            return redirect()->to(Dashboard::getUrl(panel: 'admin'));
+//        }
         return $next($request);
     }
 }

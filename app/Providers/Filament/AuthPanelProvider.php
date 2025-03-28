@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Http\Middleware\RedirectToProperPanelMiddleware;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -25,6 +26,7 @@ class AuthPanelProvider extends PanelProvider
     {
         return $panel
             ->id('auth')
+            ->passwordReset()
             ->profile()
             ->login()
             ->registration()
@@ -36,9 +38,7 @@ class AuthPanelProvider extends PanelProvider
             ])
             ->discoverResources(in: app_path('Filament/Auth/Resources'), for: 'App\\Filament\\Auth\\Resources')
             ->discoverPages(in: app_path('Filament/Auth/Pages'), for: 'App\\Filament\\Auth\\Pages')
-            ->pages([
-                Pages\Dashboard::class,
-            ])
+            ->pages([])
             ->discoverWidgets(in: app_path('Filament/Auth/Widgets'), for: 'App\\Filament\\Auth\\Widgets')
             ->widgets([
 //                Widgets\AccountWidget::class,
@@ -56,7 +56,7 @@ class AuthPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([
-                RedirectIfAuthenticated::class,
+                RedirectToProperPanelMiddleware::class,
                 Authenticate::class,
             ]);
     }
