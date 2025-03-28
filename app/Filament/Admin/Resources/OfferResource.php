@@ -147,4 +147,10 @@ class OfferResource extends Resource
             'index' => Pages\ManageOffers::route('/'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
 }

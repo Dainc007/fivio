@@ -88,4 +88,10 @@ class ProductResource extends Resource
             'index' => Pages\ManageProducts::route('/'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
 }

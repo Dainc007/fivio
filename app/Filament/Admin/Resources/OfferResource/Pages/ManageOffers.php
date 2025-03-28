@@ -3,8 +3,10 @@
 namespace App\Filament\Admin\Resources\OfferResource\Pages;
 
 use App\Filament\Admin\Resources\OfferResource;
+use App\Models\User;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
+use Illuminate\Support\Facades\Mail;
 
 class ManageOffers extends ManageRecords
 {
@@ -15,5 +17,19 @@ class ManageOffers extends ManageRecords
         return [
             Actions\CreateAction::make(),
         ];
+    }
+
+    protected function afterCreate()
+    {
+        $users = User::all();
+        foreach ($users as $user) {
+            Mail::to($user->email)
+                ->send(
+                    new GenericEmail(
+                        subject: 'Test',
+                        body: 'Test',
+                    )
+                );
+        }
     }
 }

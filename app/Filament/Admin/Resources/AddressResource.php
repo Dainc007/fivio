@@ -93,4 +93,10 @@ class AddressResource extends Resource
             'index' => Pages\ManageAddresses::route('/'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
 }

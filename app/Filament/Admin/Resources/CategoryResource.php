@@ -64,4 +64,10 @@ class CategoryResource extends Resource
             'index' => Pages\ManageCategories::route('/'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
 }

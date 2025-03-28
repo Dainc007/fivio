@@ -92,4 +92,10 @@ class UserResource extends Resource
             'index' => Pages\ManageUsers::route('/'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
 }

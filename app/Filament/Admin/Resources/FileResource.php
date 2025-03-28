@@ -95,4 +95,10 @@ class FileResource extends Resource
             'index' => Pages\ManageFiles::route('/'),
         ];
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
+
 }
