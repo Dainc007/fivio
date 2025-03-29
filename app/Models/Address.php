@@ -9,6 +9,16 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 final class Address extends Model
 {
+    protected $fillable = [
+        'street',
+        'street_additional',
+        'city',
+        'postal_code',
+        'country',
+    ];
+
+    protected $guarded = [];
+
     public function user(): HasOne
     {
         return $this->hasOne(User::class);
@@ -26,7 +36,6 @@ final class Address extends Model
             $this->street,
             $this->street_additional ?? '',
             $this->city,
-            $this->state,
             $this->postal_code,
             $this->country
         );
