@@ -75,6 +75,6 @@ final class CategoryResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return (string)self::getModel()::count();
+        return (string) self::getModel()::count();
     }
 }

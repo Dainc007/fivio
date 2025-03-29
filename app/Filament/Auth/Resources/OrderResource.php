@@ -120,7 +120,7 @@ final class OrderResource extends Resource
     }
 
     /**
-     * @return \Filament\Tables\Columns\TextColumn[]
+     * @return Tables\Columns\TextColumn[]
      */
     public static function getColumns(): array
     {

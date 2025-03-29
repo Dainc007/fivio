@@ -18,9 +18,9 @@ final class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
-    private static ?string $icon = 'heroicon-o-users';
-
     protected static ?int $navigationSort = 3;
+
+    private static ?string $icon = 'heroicon-o-users';
 
     public static function form(Form $form): Form
     {
@@ -118,6 +118,6 @@ final class UserResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return (string)self::getModel()::count();
+        return (string) self::getModel()::count();
     }
 }

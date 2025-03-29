@@ -126,7 +126,7 @@ final class OrderResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return (string)self::getModel()::count();
+        return (string) self::getModel()::count();
     }
 
     public static function getForm(): array

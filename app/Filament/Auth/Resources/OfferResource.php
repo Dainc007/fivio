@@ -62,7 +62,7 @@ final class OfferResource extends Resource
     }
 
     /**
-     * @return \Filament\Tables\Columns\TextColumn[]
+     * @return Tables\Columns\TextColumn[]
      */
     public static function getColumns(): array
     {
@@ -92,6 +92,7 @@ final class OfferResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ];
         }
+
         return [];
     }
 }

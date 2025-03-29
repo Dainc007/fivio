@@ -43,7 +43,7 @@ final class AppServiceProvider extends ServiceProvider
         DB::prohibitDestructiveCommands($isProduction);
         URL::forceScheme('https');
 
-        if(!$isProduction) {
+        if (! $isProduction) {
             Lang::handleMissingKeysUsing(function ($key, $replace, $locale, $fallback): void {
                 Log::error("Missing translation key: {$key} in locale: {$locale}");
             });

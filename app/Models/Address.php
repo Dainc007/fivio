@@ -32,7 +32,7 @@ final class Address extends Model
     public function getFullAddressAttribute(): string
     {
         return sprintf(
-            '%s %s, %s, %s %s, %s',
+            '%s %s, %s, %s %s',
             $this->street,
             $this->street_additional ?? '',
             $this->city,

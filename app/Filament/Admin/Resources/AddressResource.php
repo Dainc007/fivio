@@ -18,11 +18,11 @@ final class AddressResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-map';
 
-    private static ?string $icon = 'heroicon-o-map-pin';
-
     protected static ?int $navigationSort = 5;
 
     protected static bool $shouldRegisterNavigation = false;
+
+    private static ?string $icon = 'heroicon-o-map-pin';
 
     public static function form(Form $form): Form
     {

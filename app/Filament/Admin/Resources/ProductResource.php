@@ -20,9 +20,9 @@ final class ProductResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
 
-    private static ?string $icon = 'heroicon-o-cube';
-
     protected static ?int $navigationSort = 4;
+
+    private static ?string $icon = 'heroicon-o-cube';
 
     public static function form(Form $form): Form
     {
@@ -116,6 +116,6 @@ final class ProductResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return (string)self::getModel()::count();
+        return (string) self::getModel()::count();
     }
 }
