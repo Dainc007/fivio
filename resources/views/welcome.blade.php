@@ -36,7 +36,7 @@
         </style>
     @endif
 </head>
-<body class="bg-gray-50">
+<body class="bg-green-50">
 <div class="min-h-screen flex flex-col">
     <!-- Header -->
     <header class="bg-white border-b border-gray-200">
@@ -89,7 +89,7 @@
     <main class="flex-1">
         <div class="container mx-auto px-4 py-8">
             <!-- Welcome Section -->
-            <div class="mb-16">
+            <div class="mb-8">
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                     <div class="p-8">
                         <div class="flex flex-col items-center text-center">
@@ -101,7 +101,7 @@
             </div>
 
             <!-- Why Join Us Section -->
-            <div class="mb-16">
+            <div class="mb-8">
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                     <div class="p-6">
                         <h2 class="text-3xl font-bold text-center text-emerald-700 mb-8">{{ __('welcome.why_join_title') }}</h2>
@@ -159,7 +159,7 @@
             </div>
 
             <!-- Cooperation Process Section -->
-            <div class="mb-16">
+            <div class="mb-8">
                 <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                     <div class="p-6">
                         <h2 class="text-3xl font-bold text-center text-emerald-700 mb-8">{{ __('welcome.cooperation_title') }}</h2>
