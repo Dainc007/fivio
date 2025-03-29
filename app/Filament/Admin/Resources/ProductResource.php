@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\ProductResource\Pages;
-use App\Filament\Admin\Resources\ProductResource\RelationManagers;
 use App\Models\Category;
 use App\Models\Product;
 use Filament\Forms;
@@ -11,19 +12,17 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
-use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class ProductResource extends Resource
+final class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
-    protected static ?string $icon = 'heroicon-o-cube';
-    protected static ?int $navigationSort = 3;
 
+    private static ?string $icon = 'heroicon-o-cube';
+
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
@@ -32,11 +31,11 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->translateLabel()
                     ->required(),
-//                Forms\Components\TextInput::make('price')
-//                    ->translateLabel()
-//                    ->required()
-//                    ->numeric()
-//                    ->prefix('$'),
+                //                Forms\Components\TextInput::make('price')
+                //                    ->translateLabel()
+                //                    ->required()
+                //                    ->numeric()
+                //                    ->prefix('$'),
                 Forms\Components\Select::make('category_id')
                     ->translateLabel()
                     ->searchable()
@@ -65,11 +64,11 @@ class ProductResource extends Resource
                     ->alignCenter()
                     ->searchable()
                     ->toggleable(),
-//                Tables\Columns\TextColumn::make('price')
-//                    ->translateLabel()
-//                    ->alignCenter()
-//                    ->money()
-//                    ->sortable(),
+                //                Tables\Columns\TextColumn::make('price')
+                //                    ->translateLabel()
+                //                    ->alignCenter()
+                //                    ->money()
+                //                    ->sortable(),
                 Tables\Columns\TextColumn::make('category.name')
                     ->translateLabel()
                     ->alignCenter()
@@ -95,7 +94,7 @@ class ProductResource extends Resource
                     ->multiple()
                     ->preload()
                     ->options(Category::all()->pluck('name', 'id')->toArray())
-                    ->attribute('category_id')
+                    ->attribute('category_id'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -117,7 +116,6 @@ class ProductResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return (string)self::getModel()::count();
     }
-
 }

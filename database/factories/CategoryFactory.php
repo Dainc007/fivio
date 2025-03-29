@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\Category;
@@ -8,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends Factory<Category>
  */
-class CategoryFactory extends Factory
+final class CategoryFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +20,7 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->colorName() . rand(1,10)
+            'name' => $this->faker->colorName().rand(1, 10),
         ];
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\OrderResource\Pages;
@@ -8,19 +10,27 @@ use App\Models\Address;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
+use App\Notifications\OrderAccepted;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
-class OrderResource extends Resource
+final class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
+
     protected static ?string $label = 'Zapotrzebowanie';
+
     protected static ?string $pluralLabel = 'Zapotrzebowanie';
+
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -35,9 +45,63 @@ class OrderResource extends Resource
             ->striped()
             ->columns(self::getColumns())
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->translateLabel()
+                    ->multiple()
+                    ->options([
+                        'active' => 'Aktywne',
+                        'finished' => 'Zakończone',
+                        'cancelled' => 'Anulowane',
+                    ]
+                    ),
             ])
             ->actions([
+                Tables\Actions\Action::make('offers')
+                    ->visible(fn (Order $order): bool => $order->status === 'active')
+                    ->color(Color::Fuchsia)
+                    ->icon('heroicon-o-users')
+                    ->modal()
+                    ->form([
+                        Forms\Components\Select::make('offer_id')
+                            ->translateLabel()
+                            ->options(function ($record) {
+                                if (! $record) {
+                                    return [];
+                                }
+
+                                return $record->offers()
+                                    ->with('user')
+                                    ->get()
+                                    ->mapWithKeys(function ($offer) {
+                                        return [
+                                            $offer->id => $offer->user->name.' - '.$offer->price.' zł',
+                                        ];
+                                    });
+                            }),
+                    ])
+                    ->after(function (array $data, $record): void {
+                        $record->update(['status' => 'finished']);
+
+                        $offer = $record->offers->where('id', $data['offer_id'])->first();
+
+                        if ($offer) {
+                            $offer->update(['status' => 'accepted']);
+
+                            $offer->user->notify(new OrderAccepted());
+
+                            Notification::make()
+                                ->title('Sukces!')
+                                ->body('Oferta została pomyślnie utworzona.')
+                                ->success()
+                                ->send();
+                        } else {
+                            Notification::make()
+                                ->title('Błąd!')
+                                ->body('Nie znaleziono oferty.')
+                                ->danger()
+                                ->send();
+                        }
+                    }),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -45,7 +109,12 @@ class OrderResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->modifyQueryUsing(function (Builder $query) {
+                return $query
+                    ->with('offers.user')
+                    ->withCount('offers');
+            });
     }
 
     public static function getPages(): array
@@ -57,7 +126,7 @@ class OrderResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return (string)self::getModel()::count();
     }
 
     public static function getForm(): array
@@ -77,12 +146,6 @@ class OrderResource extends Resource
                         ->required()
                         ->placeholder('Enter product name')
                         ->label('Product Name'),
-//                    Forms\Components\TextInput::make('price')
-//                        ->translateLabel()
-//                        ->required()
-//                        ->numeric()
-//                        ->prefix('$')
-//                        ->label('Product Price'),
                     Forms\Components\Select::make('category_id')
                         ->translateLabel()
                         ->searchable()
@@ -108,8 +171,7 @@ class OrderResource extends Resource
                 ->required(),
             Forms\Components\DatePicker::make('delivery_date')
                 ->translateLabel()
-                ->default(today())
-            ,
+                ->default(today()),
 
             Forms\Components\Select::make('status')
                 ->translateLabel()
@@ -118,7 +180,7 @@ class OrderResource extends Resource
                 ->options([
                     'active' => 'Aktywne',
                     'finished' => 'Zakończone',
-                    'cancelled' => 'Anulowane'
+                    'cancelled' => 'Anulowane',
                 ]),
 
             Forms\Components\Select::make('address_id')
@@ -143,7 +205,7 @@ class OrderResource extends Resource
                         ->translateLabel(),
                 ])
                 ->createOptionUsing(function (array $data): int {
-                    return (Address::firstOrCreate($data))->id;
+                    return Address::firstOrCreate($data)->id;
                 })
                 ->createOptionModalHeading('Create New Address'),
 
@@ -193,12 +255,17 @@ class OrderResource extends Resource
                 ->alignCenter()
                 ->badge()
                 ->toggleable()
-                ->color(fn(string $state): string => match ($state) {
+                ->color(fn (string $state): string => match ($state) {
                     'active' => 'success',
                     'finished' => 'danger',
                     'cancelled' => 'yellow',
                     default => 'gray',
                 }),
+            Tables\Columns\TextColumn::make('offers_count')
+                ->label('Offers')
+                ->badge()
+                ->color('primary')
+                ->sortable(),
             Tables\Columns\TextColumn::make('address.full_address')
                 ->translateLabel()
                 ->alignCenter()
@@ -217,6 +284,13 @@ class OrderResource extends Resource
                 ->dateTime()
                 ->sortable()
                 ->toggleable(isToggledHiddenByDefault: true),
+        ];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\OffersRelationManager::class,
         ];
     }
 }

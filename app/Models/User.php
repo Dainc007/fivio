@@ -10,7 +10,7 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -48,11 +48,21 @@ final class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         if ($panel->getId() === 'admin') {
-            return in_array($this->email, ['test@example.com']);
-//            return str_ends_with($this->email, '@yourdomain.com') && $this->hasVerifiedEmail();
+            return $this->email == 'test@example.com';
+            //            return str_ends_with($this->email, '@yourdomain.com') && $this->hasVerifiedEmail();
         }
 
         return true;
+    }
+
+    public function address(): BelongsTo
+    {
+        return $this->BelongsTo(Address::class);
+    }
+
+    public function offers(): HasMany
+    {
+        return $this->hasMany(Offer::class);
     }
 
     /**
@@ -66,10 +76,5 @@ final class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function address(): BelongsTo
-    {
-        return $this->BelongsTo(Address::class);
     }
 }

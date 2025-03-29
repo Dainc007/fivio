@@ -1,26 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\UserResource\Pages;
-use App\Filament\Admin\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class UserResource extends Resource
+final class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
-    protected static ?string $icon = 'heroicon-o-users';
-    protected static ?int $navigationSort = 2;
 
+    private static ?string $icon = 'heroicon-o-users';
+
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {
@@ -33,10 +33,8 @@ class UserResource extends Resource
                     ->translateLabel()
                     ->email()
                     ->required(),
-                Forms\Components\TextInput::make('company_name')->translateLabel()
-                ,
-                Forms\Components\TextInput::make('tax_number')->translateLabel()
-                ,
+                Forms\Components\TextInput::make('company_name')->translateLabel(),
+                Forms\Components\TextInput::make('tax_number')->translateLabel(),
                 Forms\Components\Toggle::make('has_access')->translateLabel()
                     ->required(),
                 Forms\Components\Toggle::make('is_admin')
@@ -120,7 +118,6 @@ class UserResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return (string)self::getModel()::count();
     }
-
 }

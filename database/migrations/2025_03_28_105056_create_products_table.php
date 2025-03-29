@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -30,7 +32,7 @@ return new class extends Migration
             'Len',
         ];
 
-        $products = array_map(fn($name) => ['name' => $name], $productNames);
+        $products = array_map(fn ($name) => ['name' => $name], $productNames);
         Product::insert($products);
 
     }

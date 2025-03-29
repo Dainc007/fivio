@@ -1,26 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Auth\Resources;
 
 use App\Filament\Auth\Resources\OfferResource\Pages;
-use App\Filament\Auth\Resources\OfferResource\RelationManagers;
 use App\Models\Offer;
-use App\Models\Order;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class OfferResource extends Resource
+final class OfferResource extends Resource
 {
     protected static ?string $model = Offer::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
     protected static ?string $navigationLabel = 'My Offers';
+
     protected static ?int $navigationSort = 2;
+
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
@@ -30,25 +31,25 @@ class OfferResource extends Resource
 
     public static function table(Table $table): Table
     {
-        if (!auth()->user()->has_access) {
+        if (! auth()->user()->has_access) {
             $table->heading('Twoje Konto Oczekuje na Weryfikację.');
         }
 
-        $columns = self::getColumns();
+        self::getColumns();
 
         return $table
             ->striped()
-            ->columns($columns)
+            ->columns([])
             ->filters([
                 //
             ])
             ->actions([
-//                Tables\Actions\EditAction::make(),
-//                Tables\Actions\DeleteAction::make(),
+                //                Tables\Actions\EditAction::make(),
+                //                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-//                    Tables\Actions\DeleteBulkAction::make(),
+                    //                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -60,12 +61,13 @@ class OfferResource extends Resource
         ];
     }
 
-    public static function getColumns()
+    /**
+     * @return \Filament\Tables\Columns\TextColumn[]
+     */
+    public static function getColumns(): array
     {
-        $columns = [];
-
         if (auth()->user()->has_access) {
-            $columns = [
+            return [
                 Tables\Columns\TextColumn::make('order_id')
                     ->translateLabel()
                     ->alignCenter()
@@ -90,7 +92,6 @@ class OfferResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ];
         }
-
-        return $columns;
+        return [];
     }
 }

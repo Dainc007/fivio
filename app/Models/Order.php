@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Observers\OrderObserver;
@@ -7,16 +9,20 @@ use App\Traits\Model\HasFiles;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[ObservedBy([OrderObserver::class])]
-class Order extends Model
+final class Order extends Model
 {
+    use HasFiles;
+
     protected $casts = [
         'attachment' => 'array',
     ];
 
-    use HasFiles;
+    // In your Order model
+    protected $appends = ['userHasSubmittedOffer'];
+
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
@@ -30,5 +36,21 @@ class Order extends Model
     public function address(): BelongsTo
     {
         return $this->BelongsTo(Address::class);
+    }
+
+    public function getUserHasSubmittedOfferAttribute(): bool
+    {
+        return $this->userOffers()->exists();
+    }
+
+    public function userOffers(): HasMany
+    {
+        return $this->hasMany(Offer::class, 'order_id')
+            ->where('user_id', auth()->id());
+    }
+
+    public function offers(): HasMany
+    {
+        return $this->hasMany(Offer::class);
     }
 }

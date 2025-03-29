@@ -1,27 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\AddressResource\Pages;
-use App\Filament\Admin\Resources\AddressResource\RelationManagers;
 use App\Models\Address;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class AddressResource extends Resource
+final class AddressResource extends Resource
 {
     protected static ?string $model = Address::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-map';
-    protected static ?string $icon = 'heroicon-o-map-pin';
-    protected static ?int $navigationSort = 5;
-    protected static bool $shouldRegisterNavigation = false;
 
+    private static ?string $icon = 'heroicon-o-map-pin';
+
+    protected static ?int $navigationSort = 5;
+
+    protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
@@ -35,14 +36,10 @@ class AddressResource extends Resource
                     ->relationship('order', 'id'),
                 Forms\Components\TextInput::make('street')
                     ->translateLabel(),
-                Forms\Components\TextInput::make('street_additional')                ->translateLabel()
-                ,
-                Forms\Components\TextInput::make('city')                ->translateLabel()
-                ,
-                Forms\Components\TextInput::make('postal_code')                ->translateLabel()
-                ,
-                Forms\Components\TextInput::make('country')                ->translateLabel()
-                ,
+                Forms\Components\TextInput::make('street_additional')->translateLabel(),
+                Forms\Components\TextInput::make('city')->translateLabel(),
+                Forms\Components\TextInput::make('postal_code')->translateLabel(),
+                Forms\Components\TextInput::make('country')->translateLabel(),
             ]);
     }
 
@@ -127,7 +124,6 @@ class AddressResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::count();
+        return self::getModel()::count();
     }
-
 }

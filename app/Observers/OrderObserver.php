@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Observers;
 
 use App\Models\Order;
 use App\Models\User;
 use App\Notifications\OrderCreated;
 
-class OrderObserver
+final class OrderObserver
 {
     /**
      * Handle the Order "created" event.
@@ -20,17 +22,9 @@ class OrderObserver
     }
 
     /**
-     * Handle the Order "updated" event.
-     */
-    public function updated(Order $order): void
-    {
-        //
-    }
-
-    /**
      * Handle the Order "deleted" event.
      */
-    public function deleted(Order $order): void
+    public function deleted(): void
     {
         //
     }
@@ -38,7 +32,7 @@ class OrderObserver
     /**
      * Handle the order "restored" event.
      */
-    public function restored(Order $order): void
+    public function restored(): void
     {
         //
     }
@@ -46,7 +40,7 @@ class OrderObserver
     /**
      * Handle the order "force deleted" event.
      */
-    public function forceDeleted(Order $order): void
+    public function forceDeleted(): void
     {
         //
     }

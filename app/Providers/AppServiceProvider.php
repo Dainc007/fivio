@@ -18,7 +18,6 @@ use Illuminate\Support\ServiceProvider;
 
 final class AppServiceProvider extends ServiceProvider
 {
-
     public $singletons = [
         LoginResponse::class => \App\Http\Responses\LoginResponse::class,
         LogoutResponse::class => \App\Http\Responses\LogoutResponse::class,

@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'header_title' => 'Intact Balance',
     'register_button' => 'Register account',
     'login_button' => 'Log in',
     'panel' => 'Go to Panel',
-
 
     'welcome_title' => 'Welcome to Intact Balance Supplier Zone',
     'welcome_description' => 'B2B Platform for suppliers of raw materials and ingredients',

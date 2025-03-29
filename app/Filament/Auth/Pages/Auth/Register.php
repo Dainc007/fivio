@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Auth\Pages\Auth;
 
 use Filament\Forms\Components\Component;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Auth\Register as BaseRegister;
 
-class Register extends BaseRegister
+final class Register extends BaseRegister
 {
-
     protected function getForms(): array
     {
         return [
@@ -27,13 +28,13 @@ class Register extends BaseRegister
         ];
     }
 
-    protected function getTaxNumberFormComponent(): Component
+    private function getTaxNumberFormComponent(): Component
     {
         return TextInput::make('tax_number')
             ->translateLabel();
     }
 
-    protected function getCompanyNameFormComponent(): TextInput
+    private function getCompanyNameFormComponent(): TextInput
     {
         return TextInput::make('company_name')
             ->translateLabel();

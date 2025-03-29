@@ -1,14 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Responses;
 
-
-use Filament\Pages\Dashboard;
+use Filament\Http\Responses\Auth\LoginResponse as BaseLoginResponse;
 use Illuminate\Http\RedirectResponse;
 use Livewire\Features\SupportRedirects\Redirector;
-use Filament\Http\Responses\Auth\LoginResponse as BaseLoginResponse;
 
-class LoginResponse extends BaseLoginResponse
+final class LoginResponse extends BaseLoginResponse
 {
     public function toResponse($request): RedirectResponse|Redirector
     {
