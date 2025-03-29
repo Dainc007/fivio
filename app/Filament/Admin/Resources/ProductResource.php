@@ -32,14 +32,15 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->translateLabel()
                     ->required(),
-                Forms\Components\TextInput::make('price')
-                    ->translateLabel()
-                    ->required()
-                    ->numeric()
-                    ->prefix('$'),
+//                Forms\Components\TextInput::make('price')
+//                    ->translateLabel()
+//                    ->required()
+//                    ->numeric()
+//                    ->prefix('$'),
                 Forms\Components\Select::make('category_id')
                     ->translateLabel()
                     ->searchable()
+                    ->preload()
                     ->relationship('category', 'name')
                     ->required()
                     ->createOptionModalHeading('Create New Category')
@@ -62,17 +63,19 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->translateLabel()
                     ->alignCenter()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('price')
-                    ->translateLabel()
-                    ->alignCenter()
-                    ->money()
-                    ->sortable(),
+                    ->searchable()
+                    ->toggleable(),
+//                Tables\Columns\TextColumn::make('price')
+//                    ->translateLabel()
+//                    ->alignCenter()
+//                    ->money()
+//                    ->sortable(),
                 Tables\Columns\TextColumn::make('category.name')
                     ->translateLabel()
                     ->alignCenter()
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->translateLabel()
                     ->alignCenter()
@@ -90,6 +93,7 @@ class ProductResource extends Resource
                 SelectFilter::make('category_id')
                     ->translateLabel()
                     ->multiple()
+                    ->preload()
                     ->options(Category::all()->pluck('name', 'id')->toArray())
                     ->attribute('category_id')
             ])

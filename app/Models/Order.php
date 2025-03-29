@@ -27,8 +27,8 @@ class Order extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function address(): HasOne
+    public function address(): BelongsTo
     {
-        return $this->hasOne(Address::class);
+        return $this->BelongsTo(Address::class);
     }
 }

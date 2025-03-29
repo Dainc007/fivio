@@ -3,18 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Address extends Model
 {
-    public function user(): BelongsTo
+    public function user(): HasOne
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(User::class);
     }
 
-    public function order(): BelongsTo
+    public function order(): HasOne
     {
-        return $this->belongsTo(Order::class);
+        return $this->hasOne(Order::class);
     }
 
     public function getFullAddressAttribute(): string

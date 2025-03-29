@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Auth\Pages\Auth\Register;
 use App\Http\Middleware\RedirectToProperPanelMiddleware;
 use Exception;
 use Filament\Http\Middleware\Authenticate;
@@ -30,13 +31,13 @@ class AuthPanelProvider extends PanelProvider
     {
         return $panel
             ->id('auth')
+            ->path('auth')
             ->passwordReset()
             ->profile()
             ->login()
-            ->registration()
+            ->registration(Register::class)
             ->spa()
             ->topNavigation()
-            ->path('auth')
             ->colors([
                 'primary' => Color::Green,
             ])

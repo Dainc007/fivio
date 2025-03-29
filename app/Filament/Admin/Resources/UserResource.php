@@ -56,27 +56,33 @@ class UserResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->translateLabel()
+                    ->toggleable()
                     ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('company_name')
                     ->alignCenter()
+                    ->toggleable()
                     ->translateLabel()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tax_number')
                     ->alignCenter()
+                    ->toggleable()
                     ->translateLabel()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->alignCenter()
+                    ->toggleable()
                     ->translateLabel()
                     ->searchable(),
 
                 Tables\Columns\ToggleColumn::make('has_access')
                     ->translateLabel()
+                    ->toggleable()
                     ->alignCenter()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_admin')
                     ->translateLabel()
+                    ->toggleable()
                     ->alignCenter()
                     ->boolean()
                     ->toggleable(),

@@ -28,6 +28,8 @@ return new class extends Migration
 
             $table->boolean('has_access')->default(false);
             $table->boolean('is_admin')->default(false);
+            $table->foreignId('address_id')->nullable()->constrained()->noActionOnDelete();
+
         });
 
         if (! User::where('email', 'test@example.com')->exists()) {

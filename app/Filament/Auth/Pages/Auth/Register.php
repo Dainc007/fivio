@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Filament\Auth\Pages\Auth;
+
+use Filament\Forms\Components\Component;
+use Filament\Forms\Components\TextInput;
+use Filament\Pages\Auth\Register as BaseRegister;
+
+class Register extends BaseRegister
+{
+
+    protected function getForms(): array
+    {
+        return [
+            'form' => $this->form(
+                $this->makeForm()
+                    ->schema([
+                        $this->getNameFormComponent(),
+                        $this->getEmailFormComponent(),
+                        $this->getPasswordFormComponent(),
+                        $this->getPasswordConfirmationFormComponent(),
+                        $this->getCompanyNameFormComponent(),
+                        $this->getTaxNumberFormComponent(),
+                    ])
+                    ->statePath('data'),
+            ),
+        ];
+    }
+
+    protected function getTaxNumberFormComponent(): Component
+    {
+        return TextInput::make('tax_number')
+            ->translateLabel();
+    }
+
+    protected function getCompanyNameFormComponent(): TextInput
+    {
+        return TextInput::make('company_name')
+            ->translateLabel();
+    }
+}

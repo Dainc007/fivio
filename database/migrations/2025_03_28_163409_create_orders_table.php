@@ -14,11 +14,13 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->noActionOnDelete();
+            $table->foreignId('address_id')->nullable()->constrained()->noActionOnDelete();
             $table->integer('quantity');
             $table->integer('price')->nullable();
             $table->string('unit');
             $table->date('delivery_date')->nullable();
             $table->json('attachment')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }
