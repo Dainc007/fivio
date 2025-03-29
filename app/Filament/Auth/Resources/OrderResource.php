@@ -158,7 +158,7 @@ final class OrderResource extends Resource
                     ->alignCenter()
                     ->badge()
                     ->toggleable()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn ($record): string => match ($record->status) {
                         'active' => 'success',
                         'finished' => 'danger',
                         'cancelled' => 'yellow',
