@@ -27,10 +27,6 @@ final class OrderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
 
-    protected static ?string $label = 'Zapotrzebowanie';
-
-    protected static ?string $pluralLabel = 'Zapotrzebowanie';
-
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -46,7 +42,6 @@ final class OrderResource extends Resource
             ->columns(self::getColumns())
             ->filters([
                 SelectFilter::make('status')
-                    ->translateLabel()
                     ->multiple()
                     ->options([
                         'active' => 'Aktywne',
@@ -63,7 +58,6 @@ final class OrderResource extends Resource
                     ->modal()
                     ->form([
                         Forms\Components\Select::make('offer_id')
-                            ->translateLabel()
                             ->options(function ($record) {
                                 if (! $record) {
                                     return [];
@@ -141,13 +135,11 @@ final class OrderResource extends Resource
                 ->createOptionModalHeading('Create New Product')
                 ->createOptionForm([
                     Forms\Components\TextInput::make('name')
-                        ->translateLabel()
                         ->unique()
                         ->required()
                         ->placeholder('Enter product name')
                         ->label('Product Name'),
                     Forms\Components\Select::make('category_id')
-                        ->translateLabel()
                         ->searchable()
                         ->options(Category::all()->pluck('name', 'id'))
                         ->relationship('category', 'name')
@@ -162,19 +154,15 @@ final class OrderResource extends Resource
                         ]),
                 ]),
             Forms\Components\TextInput::make('quantity')
-                ->translateLabel()
                 ->minValue(0)
                 ->required()
                 ->numeric(),
             Forms\Components\TextInput::make('unit')
-                ->translateLabel()
                 ->required(),
             Forms\Components\DatePicker::make('delivery_date')
-                ->translateLabel()
                 ->default(today()),
 
             Forms\Components\Select::make('status')
-                ->translateLabel()
                 ->default('active')
                 ->selectablePlaceholder(false)
                 ->options([
@@ -184,7 +172,6 @@ final class OrderResource extends Resource
                 ]),
 
             Forms\Components\Select::make('address_id')
-                ->translateLabel()
                 ->options(fn () => Address::all()->mapWithKeys(function ($address) {
                     return [
                         $address->id => $address->full_address,
@@ -193,16 +180,11 @@ final class OrderResource extends Resource
                 ->preload()
                 ->searchable()
                 ->createOptionForm([
-                    Forms\Components\TextInput::make('street')
-                        ->translateLabel(),
-                    Forms\Components\TextInput::make('street_additional')
-                        ->translateLabel(),
-                    Forms\Components\TextInput::make('city')
-                        ->translateLabel(),
-                    Forms\Components\TextInput::make('postal_code')
-                        ->translateLabel(),
-                    Forms\Components\TextInput::make('country')
-                        ->translateLabel(),
+                    Forms\Components\TextInput::make('street'),
+                    Forms\Components\TextInput::make('street_additional'),
+                    Forms\Components\TextInput::make('city'),
+                    Forms\Components\TextInput::make('postal_code'),
+                    Forms\Components\TextInput::make('country'),
                 ])
                 ->createOptionUsing(function (array $data): int {
                     return Address::firstOrCreate($data)->id;
@@ -210,7 +192,6 @@ final class OrderResource extends Resource
                 ->createOptionModalHeading('Create New Address'),
 
             Forms\Components\FileUpload::make('attachment')
-                ->translateLabel()
                 ->multiple()
                 ->openable()
                 ->downloadable()
@@ -228,33 +209,15 @@ final class OrderResource extends Resource
     {
         return [
             Tables\Columns\TextColumn::make('product.name')
-                ->alignCenter()
-                ->translateLabel()
-                ->numeric()
-                ->toggleable()
-                ->sortable(),
+                ->numeric(),
             Tables\Columns\TextColumn::make('quantity')
-                ->alignCenter()
-                ->translateLabel()
-                ->numeric()
-                ->toggleable()
-                ->sortable(),
+                ->numeric(),
             Tables\Columns\TextColumn::make('unit')
-                ->alignCenter()
-                ->translateLabel()
-                ->toggleable()
                 ->searchable(),
             Tables\Columns\TextColumn::make('delivery_date')
-                ->alignCenter()
-                ->translateLabel()
-                ->date()
-                ->toggleable()
-                ->sortable(),
+                ->date(),
             Tables\Columns\TextColumn::make('status')
-                ->translateLabel()
-                ->alignCenter()
                 ->badge()
-                ->toggleable()
                 ->color(fn ($record): string => match ($record->status) {
                     'active' => 'success',
                     'finished' => 'danger',
@@ -264,25 +227,15 @@ final class OrderResource extends Resource
             Tables\Columns\TextColumn::make('offers_count')
                 ->label('Offers')
                 ->badge()
-                ->color('primary')
-                ->sortable(),
+                ->color('primary'),
             Tables\Columns\TextColumn::make('address.full_address')
-                ->translateLabel()
-                ->alignCenter()
                 ->limit(50)
-                ->wrap()
-                ->toggleable(),
+                ->wrap(),
             Tables\Columns\TextColumn::make('created_at')
-                ->alignCenter()
-                ->translateLabel()
                 ->dateTime()
-                ->sortable()
                 ->toggleable(isToggledHiddenByDefault: true),
             Tables\Columns\TextColumn::make('updated_at')
-                ->alignCenter()
-                ->translateLabel()
                 ->dateTime()
-                ->sortable()
                 ->toggleable(isToggledHiddenByDefault: true),
         ];
     }
@@ -292,5 +245,10 @@ final class OrderResource extends Resource
         return [
             RelationManagers\OffersRelationManager::class,
         ];
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Orders');
     }
 }

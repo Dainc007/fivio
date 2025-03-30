@@ -69,26 +69,14 @@ final class OfferResource extends Resource
         if (auth()->user()->has_access) {
             return [
                 Tables\Columns\TextColumn::make('order_id')
-                    ->translateLabel()
-                    ->alignCenter()
-                    ->numeric()
-                    ->sortable(),
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('price')
-                    ->translateLabel()
-                    ->alignCenter()
-                    ->money()
-                    ->sortable(),
+                    ->money(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ];
         }

@@ -49,3 +49,4 @@ return [
     'footer_nip' => 'NIP: 8691994182',
     'footer_copyright' => 'Wszelkie prawa zastrzeżone',
 ];
+

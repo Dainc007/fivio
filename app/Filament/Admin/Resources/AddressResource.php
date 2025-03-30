@@ -29,17 +29,14 @@ final class AddressResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('user_id')
-                    ->translateLabel()
                     ->relationship('user', 'name'),
                 Forms\Components\Select::make('order_id')
-                    ->translateLabel()
                     ->relationship('order', 'id'),
-                Forms\Components\TextInput::make('street')
-                    ->translateLabel(),
-                Forms\Components\TextInput::make('street_additional')->translateLabel(),
-                Forms\Components\TextInput::make('city')->translateLabel(),
-                Forms\Components\TextInput::make('postal_code')->translateLabel(),
-                Forms\Components\TextInput::make('country')->translateLabel(),
+                Forms\Components\TextInput::make('street'),
+                Forms\Components\TextInput::make('street_additional'),
+                Forms\Components\TextInput::make('city'),
+                Forms\Components\TextInput::make('postal_code'),
+                Forms\Components\TextInput::make('country'),
             ]);
     }
 
@@ -49,56 +46,28 @@ final class AddressResource extends Resource
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
-                    ->translateLabel()
-                    ->alignCenter()
-                    ->numeric()
-                    ->sortable(),
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('order.id')
-                    ->translateLabel()
-                    ->alignCenter()
-                    ->numeric()
-                    ->sortable(),
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('street')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('street_additional')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('city')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('postal_code')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('country')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('latitude')
-                    ->translateLabel()
-                    ->alignCenter()
-                    ->numeric()
-                    ->sortable(),
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('longitude')
-                    ->translateLabel()
-                    ->alignCenter()
-                    ->numeric()
-                    ->sortable(),
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
@@ -125,5 +94,10 @@ final class AddressResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return self::getModel()::count();
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Addresses');
     }
 }

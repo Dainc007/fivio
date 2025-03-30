@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Models\User;
+use Filament\Forms\Components\Field;
 use Filament\Http\Responses\Auth\Contracts\LoginResponse;
 use Filament\Http\Responses\Auth\Contracts\LogoutResponse;
+use Filament\Infolists\Components\Entry;
+use Filament\Tables\Columns\Column;
+use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -55,6 +59,28 @@ final class AppServiceProvider extends ServiceProvider
 
         Gate::define('viewPulse', function (User $user): bool {
             return $user->isAdmin();
+        });
+
+        $this->setDefaultFilamentSettings();
+    }
+
+    protected function setDefaultFilamentSettings(): void
+    {
+        Column::configureUsing(function (Column $column): void {
+            $column
+                ->alignCenter()
+                ->sortable()
+                ->toggleable()
+                ->translateLabel();
+        });
+        Filter::configureUsing(function (Filter $filter): void {
+            $filter->translateLabel();
+        });
+        Field::configureUsing(function (Field $field): void {
+            $field->translateLabel();
+        });
+        Entry::configureUsing(function (Entry $entry): void {
+            $entry->translateLabel();
         });
     }
 }

@@ -29,15 +29,15 @@ final class ProductResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->translateLabel()
+
                     ->required(),
                 //                Forms\Components\TextInput::make('price')
-                //                    ->translateLabel()
+                //
                 //                    ->required()
                 //                    ->numeric()
                 //                    ->prefix('$'),
                 Forms\Components\Select::make('category_id')
-                    ->translateLabel()
+
                     ->searchable()
                     ->preload()
                     ->relationship('category', 'name')
@@ -45,7 +45,7 @@ final class ProductResource extends Resource
                     ->createOptionModalHeading('Create New Category')
                     ->createOptionForm([
                         Forms\Components\TextInput::make('name')
-                            ->translateLabel()
+
                             ->required()
                             ->placeholder('Enter category name')
                             ->label('Category Name'),
@@ -60,37 +60,18 @@ final class ProductResource extends Resource
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->translateLabel()
-                    ->alignCenter()
-                    ->searchable()
-                    ->toggleable(),
-                //                Tables\Columns\TextColumn::make('price')
-                //                    ->translateLabel()
-                //                    ->alignCenter()
-                //                    ->money()
-                //                    ->sortable(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('category.name')
-                    ->translateLabel()
-                    ->alignCenter()
-                    ->numeric()
-                    ->sortable()
-                    ->toggleable(),
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 SelectFilter::make('category_id')
-                    ->translateLabel()
                     ->multiple()
                     ->preload()
                     ->options(Category::all()->pluck('name', 'id')->toArray())
@@ -117,5 +98,10 @@ final class ProductResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return (string) self::getModel()::count();
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Products');
     }
 }

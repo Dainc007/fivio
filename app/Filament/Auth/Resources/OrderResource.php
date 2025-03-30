@@ -74,11 +74,11 @@ final class OrderResource extends Resource
                     })
                     ->icon('heroicon-o-plus')
                     ->color(Color::Fuchsia)
-                    ->translateLabel()
+
                     ->modal()
                     ->form([
                         Forms\Components\TextInput::make('price')
-                            ->translateLabel()
+
                             ->columnSpanFull()
                             ->minValue(1)
                             ->required()
@@ -131,33 +131,21 @@ final class OrderResource extends Resource
                 Tables\Columns\TextColumn::make('order_id')
                     ->hidden(),
                 Tables\Columns\TextColumn::make('product.name')
-                    ->alignCenter()
-                    ->translateLabel()
-                    ->numeric()
-                    ->toggleable()
-                    ->sortable(),
+
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('quantity')
-                    ->alignCenter()
-                    ->translateLabel()
-                    ->numeric()
-                    ->toggleable()
-                    ->sortable(),
+
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('unit')
-                    ->alignCenter()
-                    ->translateLabel()
-                    ->toggleable()
+
                     ->searchable(),
                 Tables\Columns\TextColumn::make('delivery_date')
-                    ->alignCenter()
-                    ->translateLabel()
-                    ->date()
-                    ->toggleable()
-                    ->sortable(),
+
+                    ->date(),
                 Tables\Columns\TextColumn::make('status')
-                    ->translateLabel()
-                    ->alignCenter()
+
                     ->badge()
-                    ->toggleable()
+
                     ->color(fn ($record): string => match ($record->status) {
                         'active' => 'success',
                         'finished' => 'danger',
@@ -165,26 +153,27 @@ final class OrderResource extends Resource
                         default => 'gray',
                     }),
                 Tables\Columns\TextColumn::make('address.full_address')
-                    ->translateLabel()
-                    ->alignCenter()
+
                     ->limit(50)
-                    ->wrap()
-                    ->toggleable(),
+                    ->wrap(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->alignCenter()
-                    ->translateLabel()
+
                     ->dateTime()
-                    ->sortable()
+
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->alignCenter()
-                    ->translateLabel()
+
                     ->dateTime()
-                    ->sortable()
+
                     ->toggleable(isToggledHiddenByDefault: true),
             ];
         }
 
         return $columns;
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Orders');
     }
 }

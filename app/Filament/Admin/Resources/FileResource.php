@@ -52,50 +52,27 @@ final class FileResource extends Resource
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('path')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('mime_type')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('size')
-                    ->translateLabel()
-                    ->alignCenter()
-                    ->numeric()
-                    ->sortable(),
+                    ->numeric(),
                 Tables\Columns\TextColumn::make('disk')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('collection')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('fileable_type')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('fileable_id')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
@@ -122,5 +99,10 @@ final class FileResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return self::getModel()::count();
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Files');
     }
 }

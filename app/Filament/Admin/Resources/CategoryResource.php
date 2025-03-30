@@ -25,7 +25,6 @@ final class CategoryResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->translateLabel()
                     ->required(),
             ]);
     }
@@ -36,20 +35,12 @@ final class CategoryResource extends Resource
             ->striped()
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->translateLabel()
-                    ->alignCenter()
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
@@ -76,5 +67,10 @@ final class CategoryResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return (string) self::getModel()::count();
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Categories');
     }
 }
