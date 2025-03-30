@@ -137,8 +137,7 @@ final class OrderResource extends Resource
                     Forms\Components\TextInput::make('name')
                         ->unique()
                         ->required()
-                        ->placeholder('Enter product name')
-                        ->label('Product Name'),
+                        ->placeholder('Enter product name'),
                     Forms\Components\Select::make('category_id')
                         ->searchable()
                         ->options(Category::all()->pluck('name', 'id'))
@@ -149,8 +148,7 @@ final class OrderResource extends Resource
                         ->createOptionForm([
                             Forms\Components\TextInput::make('name')
                                 ->required()
-                                ->placeholder('Enter category name')
-                                ->label('Category Name'),
+                                ->placeholder('Enter category name'),
                         ]),
                 ]),
             Forms\Components\TextInput::make('quantity')
@@ -225,7 +223,6 @@ final class OrderResource extends Resource
                     default => 'gray',
                 }),
             Tables\Columns\TextColumn::make('offers_count')
-                ->label('Offers')
                 ->badge()
                 ->color('primary'),
             Tables\Columns\TextColumn::make('address.full_address')

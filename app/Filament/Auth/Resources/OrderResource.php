@@ -83,8 +83,7 @@ final class OrderResource extends Resource
                             ->minValue(1)
                             ->required()
                             ->numeric()
-                            ->suffix('zł')
-                            ->label('Product Price'),
+                            ->suffix('zł'),
                     ])
                     ->after(function (array $data, $record): void {
                         Offer::create([
@@ -100,7 +99,6 @@ final class OrderResource extends Resource
                             ->send();
                     }),
                 Tables\Actions\Action::make('offerMade')
-                    ->label('Oferta złożona')
                     ->icon('heroicon-o-check-circle')
                     ->color(Color::Green)
                     ->visible(function ($record) {

@@ -45,10 +45,8 @@ final class ProductResource extends Resource
                     ->createOptionModalHeading('Create New Category')
                     ->createOptionForm([
                         Forms\Components\TextInput::make('name')
-
                             ->required()
-                            ->placeholder('Enter category name')
-                            ->label('Category Name'),
+                            ->placeholder('Enter category name'),
                     ]),
 
             ]);

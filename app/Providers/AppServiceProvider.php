@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Models\User;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Field;
 use Filament\Http\Responses\Auth\Contracts\LoginResponse;
 use Filament\Http\Responses\Auth\Contracts\LogoutResponse;
@@ -81,6 +82,9 @@ final class AppServiceProvider extends ServiceProvider
         });
         Entry::configureUsing(function (Entry $entry): void {
             $entry->translateLabel();
+        });
+        Action::configureUsing(function (Action $action): void {
+            $action->translateLabel();
         });
     }
 }
