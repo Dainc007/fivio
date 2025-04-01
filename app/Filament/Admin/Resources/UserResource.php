@@ -58,6 +58,9 @@ final class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('phone_number')
+                    ->default('-')
+                    ->searchable(),
 
                 Tables\Columns\ToggleColumn::make('has_access')
                     ->sortable(),

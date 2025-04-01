@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources;
 
+use App\Enums\OfferStatus;
+use App\Enums\OrderStatus;
 use App\Filament\Admin\Resources\OrderResource\Pages;
 use App\Filament\Admin\Resources\OrderResource\RelationManagers;
 use App\Models\Address;
@@ -43,16 +45,11 @@ final class OrderResource extends Resource
             ->filters([
                 SelectFilter::make('status')
                     ->multiple()
-                    ->options([
-                        'active' => 'Aktywne',
-                        'finished' => 'Zakończone',
-                        'cancelled' => 'Anulowane',
-                    ]
-                    ),
+                    ->options(OrderStatus::withLabels()),
             ])
             ->actions([
                 Tables\Actions\Action::make('offers')
-                    ->visible(fn (Order $order): bool => $order->status === 'active')
+                    ->visible(fn (Order $order): bool => $order->status === OrderStatus::ACTIVE->value)
                     ->color(Color::Fuchsia)
                     ->icon('heroicon-o-users')
                     ->modal()
@@ -66,34 +63,20 @@ final class OrderResource extends Resource
                                 return $record->offers()
                                     ->with('user')
                                     ->get()
-                                    ->mapWithKeys(function ($offer) {
-                                        return [
-                                            $offer->id => $offer->user->name.' - '.$offer->price.' zł',
-                                        ];
-                                    });
+                                    ->mapWithKeys(fn($offer) => [$offer->id => "{$offer->user->name} - {$offer->price} zł"]);
                             }),
                     ])
                     ->after(function (array $data, $record): void {
-                        $record->update(['status' => 'finished']);
+                        $record->update(['status' => OrderStatus::FINISHED->value]);
 
                         $offer = $record->offers->where('id', $data['offer_id'])->first();
 
                         if ($offer) {
-                            $offer->update(['status' => 'accepted']);
-
+                            $offer->update(['status' => OfferStatus::ACCEPTED->value]);
                             $offer->user->notify(new OrderAccepted());
-
-                            Notification::make()
-                                ->title('Sukces!')
-                                ->body('Oferta została pomyślnie utworzona.')
-                                ->success()
-                                ->send();
+                            Notification::make()->success()->send();
                         } else {
-                            Notification::make()
-                                ->title('Błąd!')
-                                ->body('Nie znaleziono oferty.')
-                                ->danger()
-                                ->send();
+                            Notification::make()->danger()->send();
                         }
                     }),
                 Tables\Actions\EditAction::make(),
@@ -152,22 +135,18 @@ final class OrderResource extends Resource
                         ]),
                 ]),
             Forms\Components\TextInput::make('quantity')
+                ->suffix('kg')
                 ->minValue(0)
                 ->required()
                 ->numeric(),
-            Forms\Components\TextInput::make('unit')
-                ->required(),
+
             Forms\Components\DatePicker::make('delivery_date')
                 ->default(today()),
 
             Forms\Components\Select::make('status')
                 ->default('active')
                 ->selectablePlaceholder(false)
-                ->options([
-                    'active' => 'Aktywne',
-                    'finished' => 'Zakończone',
-                    'cancelled' => 'Anulowane',
-                ]),
+                ->options(OrderStatus::withLabels()),
 
             Forms\Components\Select::make('address_id')
                 ->options(fn () => Address::all()->mapWithKeys(function ($address) {
@@ -196,7 +175,7 @@ final class OrderResource extends Resource
                 ->deletable()
                 ->visibility('private')
                 ->directory('attachments')
-                ->disk('public')
+                ->disk('private')
                 ->maxFiles(5)
                 ->preserveFilenames()
                 ->maxParallelUploads(3),
@@ -209,19 +188,13 @@ final class OrderResource extends Resource
             Tables\Columns\TextColumn::make('product.name')
                 ->numeric(),
             Tables\Columns\TextColumn::make('quantity')
+                ->suffix('kg')
                 ->numeric(),
-            Tables\Columns\TextColumn::make('unit')
-                ->searchable(),
             Tables\Columns\TextColumn::make('delivery_date')
                 ->date(),
             Tables\Columns\TextColumn::make('status')
                 ->badge()
-                ->color(fn ($record): string => match ($record->status) {
-                    'active' => 'success',
-                    'finished' => 'danger',
-                    'cancelled' => 'yellow',
-                    default => 'gray',
-                }),
+                ->color(fn (Order $record): string => OrderStatus::from($record->status)->color()),
             Tables\Columns\TextColumn::make('offers_count')
                 ->badge()
                 ->color('primary'),
