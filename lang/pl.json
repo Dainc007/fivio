@@ -56,5 +56,8 @@
     "Payment terms": "Warunki Płatności",
     "Country origin": "Kraj",
     "Offers count": "Liczba ofert",
-    "My Offers": "Moje oferty"
+    "My Offers": "Moje oferty",
+    "status.accepted": "Zaakcepotwany",
+    "status.rejected": "Odrzucony",
+    "status.pending": "Rozpatrywany"
 }

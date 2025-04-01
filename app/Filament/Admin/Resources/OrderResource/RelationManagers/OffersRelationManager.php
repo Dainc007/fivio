@@ -17,6 +17,7 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 final class OffersRelationManager extends RelationManager
@@ -53,7 +54,9 @@ final class OffersRelationManager extends RelationManager
                 TextColumn::make('payment_terms')->wrap()->lineClamp(3)->tooltip(fn($record) => $record->payment_terms),
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->multiple()
+                    ->options(OfferStatus::withLabels()),
             ])
             ->headerActions([
 //                    Tables\Actions\CreateAction::make(),
