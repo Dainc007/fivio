@@ -21,9 +21,17 @@ final class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name(),
-            'price' => rand(1, 100),
-            'category_id' => Category::all()->random()->id,
+            'name' => $this->faker->unique()->word(),
+            'category_id' => null, // Can be set using ->hasCategory()
         ];
+    }
+
+    public function hasCategory()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'category_id' => \App\Models\Category::all()->random()->id,
+            ];
+        });
     }
 }

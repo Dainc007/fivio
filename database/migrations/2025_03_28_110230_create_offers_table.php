@@ -16,8 +16,14 @@ return new class extends Migration
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained()->noActionOnDelete();
-            $table->foreignId('user_id')->constrained()->noActionOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->integer('price');
+            $table->integer('quantity');
+            $table->integer('quantity_on_pallet');
+            $table->json('attachment')->nullable();
+            $table->string('country_origin')->nullable();
+            $table->string('lote')->nullable();
+            $table->text('payment_terms')->nullable();
             $table->string('status')->default('pending');
 
             $table->unique(['order_id', 'user_id', 'status']);

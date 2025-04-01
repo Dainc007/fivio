@@ -19,7 +19,6 @@ return new class extends Migration
             $table->foreignId('address_id')->nullable()->constrained()->noActionOnDelete();
             $table->integer('quantity');
             $table->integer('price')->nullable();
-            $table->string('unit');
             $table->date('delivery_date')->nullable();
             $table->json('attachment')->nullable();
             $table->string('status')->nullable();

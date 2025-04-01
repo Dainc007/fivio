@@ -23,6 +23,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
 
+            $table->string('phone_number')->nullable();
             $table->string('tax_number')->nullable();
             $table->string('company_name')->nullable();
 
