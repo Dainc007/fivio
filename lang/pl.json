@@ -40,10 +40,19 @@
     "Unit": "Jednostka",
     "Delivery date": "Data dostawy",
     "Status": "Status",
-    "Address id": "ID adresu",
+    "Address id": "Adres",
     "Product": "Produkt",
     "Products": "Produkty",
     "Price": "Cena",
     "Category id": "ID kategorii",
-    "Category name": "Nazwa kategorii"
+    "Category name": "Nazwa kategorii",
+    "status.active": "Aktywne",
+    "status.cancelled": "Anulowane",
+    "status.finished": "Zakończone",
+    "Attachment": "Załącznik",
+    "Delivery price": "Koszt transportu",
+    "quantityAndOnPallet": "Ilość / Ilość na palecie",
+    "Expiry date": "Data",
+    "Payment terms": "Warunki Płatności",
+    "Country origin": "Kraj"
 }

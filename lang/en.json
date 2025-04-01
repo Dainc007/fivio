@@ -130,6 +130,7 @@
     "Offers": "My Offers",
     "status.active": "Active",
     "status.cancelled": "Cancelled",
-    "status.finished": "Finished"
+    "status.finished": "Finished",
+    "quantityAndOnPallet": "Quantity / Quantity On Pallet"
 }
 

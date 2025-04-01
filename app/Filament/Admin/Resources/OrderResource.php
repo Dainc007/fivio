@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Filament\Admin\Resources;
 
 use App\Enums\OfferStatus;
@@ -23,7 +21,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
-final class OrderResource extends Resource
+class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
 
@@ -34,7 +32,7 @@ final class OrderResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema(self::getForm());
+            ->schema(self::getForm())->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -48,37 +46,6 @@ final class OrderResource extends Resource
                     ->options(OrderStatus::withLabels()),
             ])
             ->actions([
-                Tables\Actions\Action::make('offers')
-                    ->visible(fn (Order $order): bool => $order->status === OrderStatus::ACTIVE->value)
-                    ->color(Color::Fuchsia)
-                    ->icon('heroicon-o-users')
-                    ->modal()
-                    ->form([
-                        Forms\Components\Select::make('offer_id')
-                            ->options(function ($record) {
-                                if (! $record) {
-                                    return [];
-                                }
-
-                                return $record->offers()
-                                    ->with('user')
-                                    ->get()
-                                    ->mapWithKeys(fn($offer) => [$offer->id => "{$offer->user->name} - {$offer->price} zł"]);
-                            }),
-                    ])
-                    ->after(function (array $data, $record): void {
-                        $record->update(['status' => OrderStatus::FINISHED->value]);
-
-                        $offer = $record->offers->where('id', $data['offer_id'])->first();
-
-                        if ($offer) {
-                            $offer->update(['status' => OfferStatus::ACCEPTED->value]);
-                            $offer->user->notify(new OrderAccepted());
-                            Notification::make()->success()->send();
-                        } else {
-                            Notification::make()->danger()->send();
-                        }
-                    }),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -94,16 +61,35 @@ final class OrderResource extends Resource
             });
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\OffersRelationManager::class,
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageOrders::route('/'),
+            'index' => Pages\ListOrders::route('/'),
+            'create' => Pages\CreateOrder::route('/create'),
+            'edit' => Pages\EditOrder::route('/{record}/edit'),
         ];
     }
 
     public static function getNavigationBadge(): ?string
     {
         return (string) self::getModel()::count();
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Orders');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('Orders');
     }
 
     public static function getForm(): array
@@ -210,15 +196,4 @@ final class OrderResource extends Resource
         ];
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            RelationManagers\OffersRelationManager::class,
-        ];
-    }
-
-    public static function getNavigationLabel(): string
-    {
-        return __('Orders');
-    }
 }
