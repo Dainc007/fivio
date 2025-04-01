@@ -52,8 +52,13 @@
                 </button>
                 <!-- Desktop navigation -->
                 <div class="hidden md:flex gap-4">
-                    @if(\Illuminate\Support\Facades\Auth::user())
-                        <a href="{{route('filament.admin.resources.products.index')}}"
+                    @if(Auth::user() && Auth::user()->is_admin)
+                        <a href="{{route('filament.admin.resources.orders.index')}}"
+                           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
+                            {{ __('welcome.panel') }}
+                        </a>
+                    @elseif(Auth::user())
+                        <a href="{{route('filament.auth.resources.orders.index')}}"
                            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500">
                             {{ __('welcome.panel') }}
                         </a>

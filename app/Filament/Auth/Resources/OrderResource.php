@@ -12,6 +12,9 @@ use App\Models\Offer;
 use App\Models\Order;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
@@ -28,9 +31,9 @@ final class OrderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
 
-    protected static ?string $label = 'Zapotrzebowanie';
+    protected static ?string $label = 'Order';
 
-    protected static ?string $pluralLabel = 'Zapotrzebowanie';
+    protected static ?string $pluralLabel = 'Orders';
 
     protected static ?int $navigationSort = 1;
 
@@ -59,14 +62,21 @@ final class OrderResource extends Resource
             ->actions([
                 Tables\Actions\Action::make('offer')
                     ->visible(function ($record): bool {
-                        return !$record->userHasSubmittedOffer && $record->status === OrderStatus::ACTIVE->value;
+                        return auth()->user()->has_access && !$record->userHasSubmittedOffer && $record->status === OrderStatus::ACTIVE->value;
                     })
                     ->icon('heroicon-o-plus')
                     ->color(Color::Fuchsia)
                     ->modal()
                     ->form(self::getFormFields())
                     ->after(function (array $data, $record): void {
-                        Offer::create($data);
+                        $data['order_id'] = $record->id;
+                        $data['user_id'] = auth()->user()->id;
+                        Offer::updateOrCreate([
+                                'order_id' => $data['order_id'],
+                                'user_id' => $data['user_id'],
+                            ],
+                            $data
+                        );
 
                         Notification::make()->success()->send();
                     }),
@@ -85,9 +95,17 @@ final class OrderResource extends Resource
                     })
                     ->modal()
                     ->form(self::getFormFields())
+                    ->fillForm(function ($record) {
+                        $offer = Offer::where('order_id', $record->id)
+                            ->where('user_id', auth()->user()->id)
+                            ->firstOrFail();
+                        $offer->product = $record->product->name;
+                        return $offer->toArray();
+                    })
                     ->after(function (array $data, $record): void {
-                        $record->offer?->update(['price' => $data['price']]);
-
+                        Offer::where('order_id', $record->id)
+                            ->where('user_id', auth()->user()->id)
+                            ->update($data);
                         Notification::make()->success()->send();
                     }),
             ])
@@ -145,12 +163,13 @@ final class OrderResource extends Resource
     private static function getFormFields(): array
     {
         return [
-            Forms\Components\TextInput::make('product')
+            TextInput::make('product')
                 ->columnSpan(4)
                 ->default(fn($record) => $record->product?->name ?? 'No product')
-                ->readOnly(),
+                ->readOnly()
+                ->disabled(),
 
-            Forms\Components\TextInput::make('quantity')
+            TextInput::make('quantity')
                 ->suffix('kg')
                 ->columnSpan(2)
                 ->numeric()
@@ -169,8 +188,7 @@ final class OrderResource extends Resource
                 ->minValue(0)
                 ->required()
                 ->numeric()
-                ->suffix('zł')
-                ->default(fn($record) => auth()->user()->offers->where('order_id', $record->id)->pluck('price')),
+                ->suffix('zł'),
 
             TextInput::make('delivery_price')
                 ->columnSpan(2)
@@ -182,7 +200,7 @@ final class OrderResource extends Resource
             TextInput::make('lote')
                 ->columnSpan(1),
 
-            Forms\Components\Select::make('country_origin')
+            Select::make('country_origin')
                 ->columnSpan(1)
                 ->options(Country::getLabels())
                 ->enum(Country::class)
@@ -192,25 +210,24 @@ final class OrderResource extends Resource
                 ->columnSpan(2)
                 ->default(today()),
 
-            Forms\Components\Textarea::make('payment_terms')
-                ->columnSpan(4),
+            Textarea::make('payment_terms')
+                ->columnSpan(2),
 
-            Forms\Components\FileUpload::make('attachment')
+            Textarea::make('comment')
+                ->columnSpan(2),
+
+            FileUpload::make('attachment')
+                ->multiple()
+                ->maxFiles(3)
                 ->columnSpan(4)
                 ->openable()
                 ->downloadable()
                 ->deletable()
                 ->visibility('private')
                 ->directory('attachments')
-                ->disk('private')
+                ->disk('public')
                 ->preserveFilenames()
                 ->maxParallelUploads(3),
-
-            TextInput::make('order_id')->hidden()->default(fn($record) => $record->id),
-            TextInput::make('user_id')->hidden()->default(auth()->id()),
         ];
     }
-
-
 }
-

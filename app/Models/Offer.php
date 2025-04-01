@@ -5,16 +5,20 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Casts\MoneyCast;
+use App\Traits\Model\HasFiles;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class Offer extends Model
 {
+
+    use HasFiles, HasFactory;
     protected $casts = [
         'price' => MoneyCast::class,
+        'delivery_price' => MoneyCast::class,
+        'attachment' => 'array',
     ];
-
-    protected $appends = ['nameWithPrice'];
 
     public function order(): BelongsTo
     {
@@ -26,8 +30,4 @@ final class Offer extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function nameWithPriceAttribute(): string
-    {
-        dd($this);
-    }
 }

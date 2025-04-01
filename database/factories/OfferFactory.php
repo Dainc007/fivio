@@ -18,6 +18,7 @@ class OfferFactory extends Factory
             'order_id' => rand(1,$maxOrderId),
             'user_id' => User::factory(),
             'price' => $this->faker->randomNumber(4),
+            'delivery_price' => $this->faker->randomNumber(3),
             'quantity' => $this->faker->numberBetween(1, 100),
             'quantity_on_pallet' => $this->faker->numberBetween(10, 50),
             'attachment' => null, // Can be set using ->hasAttachment()

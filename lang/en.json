@@ -41,8 +41,6 @@
         "footer_nip": "NIP: 8691994182",
         "footer_copyright": "All rights reserved"
     },
-
-
     "header_title": "Intact Balance",
     "register_button": "Register account",
     "login_button": "Log in",
@@ -82,11 +80,8 @@
     "footer_krs": "KRS: 0000773091",
     "footer_regon": "Regon: 382621884",
     "footer_nip": "NIP: 8691994182",
-    "footer_copyright": "All rights reserved"
-}
-
-
-"Name": "Name",
+    "footer_copyright": "All rights reserved",
+    "Name": "Name",
     "Email": "Email",
     "Company name": "Company Name",
     "Tax number": "Tax Number",
@@ -120,7 +115,7 @@
     "Fileable type": "Fileable Type",
     "Fileable id": "Fileable ID",
     "Order": "Order",
-    "Orders": "Orders",
+    "Orders": "Active offers",
     "Product id": "Product ID",
     "Quantity": "Quantity",
     "Unit": "Unit",
@@ -131,5 +126,10 @@
     "Products": "Products",
     "Price": "Price",
     "Category id": "Category ID",
-    "Category name": "Category Name"
+    "Category name": "Category Name",
+    "Offers": "My Offers",
+    "status.active": "Active",
+    "status.cancelled": "Cancelled",
+    "status.finished": "Finished"
 }
+
