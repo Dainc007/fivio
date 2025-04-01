@@ -77,7 +77,10 @@ final class OffersRelationManager extends RelationManager
                             ['status' => OfferStatus::REJECTED->value]
                         );
 
-                        Notification::make()->success()->send();
+                        Notification::make()
+                            ->title('Sukces')
+                            ->body('Akcja zakończona sukcesem')
+                            ->success()->send();
 
                     }),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)

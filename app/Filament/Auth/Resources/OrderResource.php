@@ -78,7 +78,10 @@ final class OrderResource extends Resource
                             $data
                         );
 
-                        Notification::make()->success()->send();
+                        Notification::make()
+                            ->title('Sukces')
+                            ->body('Akcja zakończona sukcesem')
+                            ->success()->send();
                     }),
                 Tables\Actions\Action::make('offerMade')
                     ->icon('heroicon-o-check-circle')
@@ -106,7 +109,10 @@ final class OrderResource extends Resource
                         Offer::where('order_id', $record->id)
                             ->where('user_id', auth()->user()->id)
                             ->update($data);
-                        Notification::make()->success()->send();
+                        Notification::make()
+                            ->title('Sukces')
+                            ->body('Akcja zakończona sukcesem')
+                            ->success()->send();
                     }),
             ])
             ->bulkActions([]);
