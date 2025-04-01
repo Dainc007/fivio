@@ -4,15 +4,21 @@ declare(strict_types=1);
 
 namespace App\Filament\Auth\Resources;
 
+use App\Enums\Country;
+use App\Enums\OfferStatus;
+use App\Enums\OrderStatus;
 use App\Filament\Auth\Resources\OrderResource\Pages;
 use App\Models\Offer;
 use App\Models\Order;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -30,73 +36,39 @@ final class OrderResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-
-                //                    Forms\Components\Select::make('product_id')
-                //                        ->relationship('product', 'name')
-                //                        ->required(),
-                //                    Forms\Components\TextInput::make('quantity')
-                //                        ->required()
-                //                        ->numeric(),
-                //                    Forms\Components\TextInput::make('price')
-                //                        ->numeric()
-                //                        ->prefix('$'),
-                //                    Forms\Components\TextInput::make('unit')
-                //                        ->required(),
-                //                    Forms\Components\DatePicker::make('delivery_date'),
-                //                    Forms\Components\Textarea::make('attachment')
-                //                        ->columnSpanFull(),
-                //                    Forms\Components\TextInput::make('status'),
-
-            ]);
+        return $form->schema(self::getFormFields());
     }
 
     public static function table(Table $table): Table
     {
         $columns = self::getColumns();
 
-        if (! auth()->user()->has_access) {
+        if (!auth()->user()->has_access) {
             $table->heading('Twoje Konto Oczekuje na Weryfikację.');
         }
 
         return $table
-            ->modifyQueryUsing(fn (Builder $query) => $query->withExists('userOffers'))
+            ->modifyQueryUsing(fn(Builder $query) => $query->withExists('userOffers'))
             ->striped()
             ->columns($columns)
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->multiple()
+                    ->options(OrderStatus::withLabels()),
             ])
             ->actions([
                 Tables\Actions\Action::make('offer')
                     ->visible(function ($record): bool {
-                        return ! $record->userHasSubmittedOffer;
+                        return !$record->userHasSubmittedOffer && $record->status === OrderStatus::ACTIVE->value;
                     })
                     ->icon('heroicon-o-plus')
                     ->color(Color::Fuchsia)
-
                     ->modal()
-                    ->form([
-                        Forms\Components\TextInput::make('price')
-
-                            ->columnSpanFull()
-                            ->minValue(1)
-                            ->required()
-                            ->numeric()
-                            ->suffix('zł'),
-                    ])
+                    ->form(self::getFormFields())
                     ->after(function (array $data, $record): void {
-                        Offer::create([
-                            'price' => $data['price'],
-                            'user_id' => auth()->id(),
-                            'order_id' => $record->id,
-                        ]);
+                        Offer::create($data);
 
-                        Notification::make()
-                            ->title('Sukces!')
-                            ->body('Oferta została pomyślnie utworzona.')
-                            ->success()
-                            ->send();
+                        Notification::make()->success()->send();
                     }),
                 Tables\Actions\Action::make('offerMade')
                     ->icon('heroicon-o-check-circle')
@@ -105,9 +77,21 @@ final class OrderResource extends Resource
                         return $record->userHasSubmittedOffer;
                     })
                     ->disabled(),
+                Tables\Actions\Action::make('editOffer')
+                    ->icon('heroicon-o-pencil')
+                    ->color(Color::Blue)
+                    ->visible(function ($record) {
+                        return $record->userHasSubmittedOffer;
+                    })
+                    ->modal()
+                    ->form(self::getFormFields())
+                    ->after(function (array $data, $record): void {
+                        $record->offer?->update(['price' => $data['price']]);
+
+                        Notification::make()->success()->send();
+                    }),
             ])
-            ->bulkActions([
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getPages(): array
@@ -129,40 +113,23 @@ final class OrderResource extends Resource
                 Tables\Columns\TextColumn::make('order_id')
                     ->hidden(),
                 Tables\Columns\TextColumn::make('product.name')
-
                     ->numeric(),
                 Tables\Columns\TextColumn::make('quantity')
-
+                    ->suffix('kg')
                     ->numeric(),
-                Tables\Columns\TextColumn::make('unit')
-
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('delivery_date')
-
                     ->date(),
                 Tables\Columns\TextColumn::make('status')
-
                     ->badge()
-
-                    ->color(fn ($record): string => match ($record->status) {
-                        'active' => 'success',
-                        'finished' => 'danger',
-                        'cancelled' => 'yellow',
-                        default => 'gray',
-                    }),
+                    ->color(fn(Order $record): string => OrderStatus::from($record->status)->color()),
                 Tables\Columns\TextColumn::make('address.full_address')
-
                     ->limit(50)
                     ->wrap(),
                 Tables\Columns\TextColumn::make('created_at')
-
                     ->dateTime()
-
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-
                     ->dateTime()
-
                     ->toggleable(isToggledHiddenByDefault: true),
             ];
         }
@@ -174,4 +141,76 @@ final class OrderResource extends Resource
     {
         return __('Orders');
     }
+
+    private static function getFormFields(): array
+    {
+        return [
+            Forms\Components\TextInput::make('product')
+                ->columnSpan(4)
+                ->default(fn($record) => $record->product?->name ?? 'No product')
+                ->readOnly(),
+
+            Forms\Components\TextInput::make('quantity')
+                ->suffix('kg')
+                ->columnSpan(2)
+                ->numeric()
+                ->suffix('kg')
+                ->required(),
+
+            TextInput::make('quantity_on_pallet')
+                ->suffix('kg')
+                ->columnSpan(2) // Kolumna 1
+                ->numeric()
+                ->suffix('kg')
+                ->required(),
+
+            TextInput::make('price')
+                ->columnSpan(2)
+                ->minValue(0)
+                ->required()
+                ->numeric()
+                ->suffix('zł')
+                ->default(fn($record) => auth()->user()->offers->where('order_id', $record->id)->pluck('price')),
+
+            TextInput::make('delivery_price')
+                ->columnSpan(2)
+                ->minValue(0)
+                ->numeric()
+                ->suffix('zł'),
+
+
+            TextInput::make('lote')
+                ->columnSpan(1),
+
+            Forms\Components\Select::make('country_origin')
+                ->columnSpan(1)
+                ->options(Country::getLabels())
+                ->enum(Country::class)
+                ->searchable(),
+
+            DatePicker::make('expiry_date')
+                ->columnSpan(2)
+                ->default(today()),
+
+            Forms\Components\Textarea::make('payment_terms')
+                ->columnSpan(4),
+
+            Forms\Components\FileUpload::make('attachment')
+                ->columnSpan(4)
+                ->openable()
+                ->downloadable()
+                ->deletable()
+                ->visibility('private')
+                ->directory('attachments')
+                ->disk('private')
+                ->preserveFilenames()
+                ->maxParallelUploads(3),
+
+            TextInput::make('order_id')->hidden()->default(fn($record) => $record->id),
+            TextInput::make('user_id')->hidden()->default(auth()->id()),
+        ];
+    }
+
+
 }
+

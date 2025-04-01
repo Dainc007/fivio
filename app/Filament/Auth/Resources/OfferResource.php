@@ -17,16 +17,13 @@ final class OfferResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationLabel = 'My Offers';
+    protected static ?string $navigationLabel = 'Moje oferty';
 
     protected static ?int $navigationSort = 2;
 
-    protected static bool $shouldRegisterNavigation = false;
-
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([]);
+        return $form->schema([]);
     }
 
     public static function table(Table $table): Table

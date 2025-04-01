@@ -20,6 +20,7 @@ final class Register extends BaseRegister
                         $this->getEmailFormComponent(),
                         $this->getPasswordFormComponent(),
                         $this->getPasswordConfirmationFormComponent(),
+                        $this->getPhoneNumberFormComponent(),
                         $this->getCompanyNameFormComponent(),
                         $this->getTaxNumberFormComponent(),
                     ])
@@ -30,13 +31,16 @@ final class Register extends BaseRegister
 
     private function getTaxNumberFormComponent(): Component
     {
-        return TextInput::make('tax_number')
-            ->translateLabel();
+        return TextInput::make('tax_number');
     }
 
     private function getCompanyNameFormComponent(): TextInput
     {
-        return TextInput::make('company_name')
-            ->translateLabel();
+        return TextInput::make('company_name');
+    }
+
+    private function getPhoneNumberFormComponent(): TextInput
+    {
+       return TextInput::make('phone_number')->tel()->prefix('+48');
     }
 }
