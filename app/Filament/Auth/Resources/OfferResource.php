@@ -98,7 +98,7 @@ final class OfferResource extends Resource
 
     public static function getNavigationLabel(): string
     {
-        return __('Offers');
+        return __('My Offers');
     }
 
     private static function getFormFields(): array
