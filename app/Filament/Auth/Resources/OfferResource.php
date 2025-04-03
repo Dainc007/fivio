@@ -134,7 +134,7 @@ final class OfferResource extends Resource
 
             TextInput::make('price')
                 ->mask(RawJs::make('$money($input)'))
-                ->stripCharacters(',')
+                ->stripCharacters('.')
                 ->columnSpan(2)
                 ->minValue(0)
                 ->required()
@@ -143,7 +143,7 @@ final class OfferResource extends Resource
 
             TextInput::make('delivery_price')
                 ->mask(RawJs::make('$money($input)'))
-                ->stripCharacters(',')
+                ->stripCharacters('.')
                 ->columnSpan(2)
                 ->minValue(0)
                 ->numeric()
