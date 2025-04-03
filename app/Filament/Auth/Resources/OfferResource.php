@@ -150,8 +150,7 @@ final class OfferResource extends Resource
                 ->suffix('zł'),
 
             DatePicker::make('delivery_date')
-                ->columnSpan(2)
-                ->default(),
+                ->columnSpan(2),
 
 
             TextInput::make('lote')
