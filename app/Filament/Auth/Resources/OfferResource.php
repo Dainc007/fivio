@@ -15,6 +15,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -132,6 +133,8 @@ final class OfferResource extends Resource
                 ->suffix('kg'),
 
             TextInput::make('price')
+                ->mask(RawJs::make('$money($input)'))
+                ->stripCharacters(',')
                 ->columnSpan(2)
                 ->minValue(0)
                 ->required()
@@ -139,6 +142,8 @@ final class OfferResource extends Resource
                 ->suffix('zł'),
 
             TextInput::make('delivery_price')
+                ->mask(RawJs::make('$money($input)'))
+                ->stripCharacters(',')
                 ->columnSpan(2)
                 ->minValue(0)
                 ->numeric()

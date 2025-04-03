@@ -20,6 +20,7 @@ use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
+use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -189,6 +190,8 @@ final class OrderResource extends Resource
                 ->suffix('kg'),
 
             TextInput::make('price')
+                ->mask(RawJs::make('$money($input)'))
+                ->stripCharacters(',')
                 ->columnSpan(2)
                 ->minValue(0)
                 ->required()
@@ -196,6 +199,8 @@ final class OrderResource extends Resource
                 ->suffix('zł'),
 
             TextInput::make('delivery_price')
+                ->mask(RawJs::make('$money($input)'))
+                ->stripCharacters(',')
                 ->columnSpan(2)
                 ->minValue(0)
                 ->numeric()
