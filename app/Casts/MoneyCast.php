@@ -26,14 +26,6 @@ final class MoneyCast implements CastsAttributes
      */
     public function set(Model $model, string $key, mixed $value, array $attributes): mixed
     {
-        if ($value === null) {
-            return null;
-        }
-
-        if (is_string($value)) {
-            $value = str_replace(',', '.', $value);
-        }
-
-        return intval(floatval($value) * 100);
+        return $value !== null ? intval($value * 100) : null;
     }
 }
