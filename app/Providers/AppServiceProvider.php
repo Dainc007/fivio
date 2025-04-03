@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Models\User;
+use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Field;
 use Filament\Http\Responses\Auth\Contracts\LoginResponse;
@@ -63,6 +64,13 @@ final class AppServiceProvider extends ServiceProvider
         });
 
         $this->setDefaultFilamentSettings();
+
+        LanguageSwitch::configureUsing(function (LanguageSwitch $languageSwitch) {
+            $languageSwitch
+                ->locales(['en', 'pl'])
+            ->circular()
+            ;
+        });
     }
 
     protected function setDefaultFilamentSettings(): void
