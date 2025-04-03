@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Casts\MoneyCast;
 use App\Enums\OrderStatus;
 use App\Observers\OrderObserver;
 use App\Traits\Model\HasFiles;
@@ -21,6 +22,7 @@ final class Order extends Model
 
     protected $casts = [
         'attachment' => 'array',
+        'price' => MoneyCast::class,
     ];
 
     protected $appends = ['userHasSubmittedOffer'];
