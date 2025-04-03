@@ -66,8 +66,10 @@ final class OffersRelationManager extends RelationManager
                     ->visible(fn(Offer $offer): bool => $offer->order->status === OrderStatus::ACTIVE->value)
                     ->color(Color::Fuchsia)
                     ->icon('heroicon-o-users')
-                    ->label('Wybierz')
+                    ->label(__('choseOffer'))
                     ->requiresConfirmation()
+                    ->modalHeading(__('choseOfferHeader'))
+                    ->modalDescription('')
                     ->action(function ($record): void {
                         $record->order->update(['status' => OrderStatus::FINISHED->value]);
                         $record->update(['status' => OfferStatus::ACCEPTED->value]);

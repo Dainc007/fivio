@@ -32,6 +32,7 @@ final class UserResource extends Resource
                     ->email()
                     ->required(),
                 Forms\Components\TextInput::make('company_name'),
+                Forms\Components\TextInput::make('phone_number')->tel(),
                 Forms\Components\TextInput::make('tax_number'),
                 Forms\Components\Toggle::make('has_access')
                     ->required(),
@@ -102,6 +103,16 @@ final class UserResource extends Resource
     }
 
     public static function getNavigationLabel(): string
+    {
+        return __('Users');
+    }
+
+    public static function getLabel(): ?string
+    {
+        return __('User');
+    }
+
+    public static function getPluralLabel(): string
     {
         return __('Users');
     }

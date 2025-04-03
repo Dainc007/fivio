@@ -37,16 +37,13 @@ final class ProductResource extends Resource
                 //                    ->numeric()
                 //                    ->prefix('$'),
                 Forms\Components\Select::make('category_id')
-
                     ->searchable()
                     ->preload()
                     ->relationship('category', 'name')
                     ->required()
-                    ->createOptionModalHeading('Create New Category')
                     ->createOptionForm([
                         Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->placeholder('Enter category name'),
+                            ->required(),
                     ]),
 
             ]);
@@ -101,5 +98,15 @@ final class ProductResource extends Resource
     public static function getNavigationLabel(): string
     {
         return __('Products');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('Products');
+    }
+
+    public static function getLabel(): ?string
+    {
+        return __('Product');
     }
 }

@@ -44,7 +44,7 @@
     "Product": "Produkt",
     "Products": "Produkty",
     "Price": "Cena",
-    "Category id": "ID kategorii",
+    "Category id": "Kategoria",
     "Category name": "Nazwa kategorii",
     "status.active": "Aktywne",
     "status.cancelled": "Anulowane",
@@ -52,12 +52,20 @@
     "Attachment": "Załącznik",
     "Delivery price": "Koszt transportu",
     "quantityAndOnPallet": "Ilość / Ilość na palecie",
-    "Expiry date": "Data",
+    "Expiry date": "Data Wygasnięcia",
     "Payment terms": "Warunki Płatności",
     "Country origin": "Kraj",
     "Offers count": "Liczba ofert",
     "My Offers": "Moje oferty",
     "status.accepted": "Zaakcepotwany",
     "status.rejected": "Odrzucony",
-    "status.pending": "Rozpatrywany"
+    "status.pending": "Rozpatrywany",
+    "delivery_date": "Termin Dostawy",
+
+    "choseOffer": "Wybierz",
+    "choseOfferHeader" : "Czy na pewno wybierasz tą ofertę?",
+    "Quantity on pallet": "Ilość na palecie",
+    "Lote": "Partia",
+    "Comment": "Uwagi",
+    "yourAccountIsBeingVerified":"Twoje Konto Oczekuje na Weryfikację."
 }

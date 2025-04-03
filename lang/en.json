@@ -125,12 +125,19 @@
     "Product": "Product",
     "Products": "Products",
     "Price": "Price",
+    "Expiry date": "Expiry Date",
     "Category id": "Category ID",
     "Category name": "Category Name",
     "Offers": "My Offers",
     "status.active": "Active",
     "status.cancelled": "Cancelled",
     "status.finished": "Finished",
-    "quantityAndOnPallet": "Quantity / Quantity On Pallet"
+    "quantityAndOnPallet": "Quantity / Quantity On Pallet",
+    "status.accepted": "Accepted",
+    "status.rejected": "Rejected",
+    "status.pending": "Pending,",
+    "delivery_date": "Delivery Term",
+    "yourAccountIsBeingVerified":"Your Account is being verified."
+
 }
 

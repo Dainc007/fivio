@@ -73,4 +73,14 @@ final class CategoryResource extends Resource
     {
         return __('Categories');
     }
+
+    public static function getPluralLabel(): string
+    {
+        return __('Categories');
+    }
+
+    public static function getLabel(): ?string
+    {
+        return __('Categories');
+    }
 }

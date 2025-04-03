@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Auth\Resources;
 
 use App\Enums\Country;
+use App\Enums\OfferStatus;
 use App\Filament\Auth\Resources\OfferResource\Pages;
 use App\Models\Offer;
 use Filament\Forms\Components\DatePicker;
@@ -38,7 +39,7 @@ final class OfferResource extends Resource
     public static function table(Table $table): Table
     {
         if (!auth()->user()->has_access) {
-            $table->heading('Twoje Konto Oczekuje na Weryfikację.');
+            $table->heading(__('yourAccountIsBeingVerified'));
         }
 
 
@@ -51,7 +52,10 @@ final class OfferResource extends Resource
                 self::getColumns()
             )
             ->filters([
-                SelectFilter::make('status')->multiple()
+                SelectFilter::make('status')
+                    ->multiple()
+                    ->options(OfferStatus::withLabels()),
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -84,12 +88,16 @@ final class OfferResource extends Resource
                     ->numeric(),
                 TextColumn::make('price')
                     ->money(),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge()
+                    ->color(fn (Offer $record): string => OfferStatus::from($record->status)->color()),
+
                 TextColumn::make('created_at')
                     ->dateTime()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(),
                 TextColumn::make('updated_at')
                     ->dateTime()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(),
             ];
         }
 
@@ -121,8 +129,7 @@ final class OfferResource extends Resource
                 ->suffix('kg')
                 ->columnSpan(2) // Kolumna 1
                 ->numeric()
-                ->suffix('kg')
-                ->required(),
+                ->suffix('kg'),
 
             TextInput::make('price')
                 ->columnSpan(2)
@@ -136,6 +143,10 @@ final class OfferResource extends Resource
                 ->minValue(0)
                 ->numeric()
                 ->suffix('zł'),
+
+            DatePicker::make('delivery_date')
+                ->columnSpan(2)
+                ->default(),
 
 
             TextInput::make('lote')
@@ -169,5 +180,15 @@ final class OfferResource extends Resource
                 ->preserveFilenames()
                 ->maxParallelUploads(3),
         ];
+    }
+
+    public static function getLabel(): ?string
+    {
+        return __('My Offers');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('My Offers');
     }
 }

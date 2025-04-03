@@ -47,7 +47,7 @@ final class OrderResource extends Resource
         $columns = self::getColumns();
 
         if (!auth()->user()->has_access) {
-            $table->heading('Twoje Konto Oczekuje na Weryfikację.');
+            $table->heading(__('yourAccountIsBeingVerified'));
         }
 
         return $table
@@ -186,8 +186,7 @@ final class OrderResource extends Resource
                 ->suffix('kg')
                 ->columnSpan(2) // Kolumna 1
                 ->numeric()
-                ->suffix('kg')
-                ->required(),
+                ->suffix('kg'),
 
             TextInput::make('price')
                 ->columnSpan(2)
