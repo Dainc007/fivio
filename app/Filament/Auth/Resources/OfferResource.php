@@ -9,11 +9,13 @@ use App\Enums\OfferStatus;
 use App\Filament\Auth\Resources\OfferResource\Pages;
 use App\Models\Offer;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Support\RawJs;
 use Filament\Tables;
@@ -113,76 +115,111 @@ final class OfferResource extends Resource
     private static function getFormFields(): array
     {
         return [
-            TextInput::make('product')
-                ->columnSpan(4)
-                ->default(fn($record) => $record->product?->name ?? 'No product')
-                ->readOnly()
-                ->disabled(),
+            FieldSet::make('Product Information')
+                ->schema([
+                    TextInput::make('product')
+                        ->columnSpan(4)
+                        ->default(fn($record) => $record->product?->name ?? 'No product')
+                        ->readOnly()
+                        ->disabled(),
 
-            TextInput::make('quantity')
-                ->suffix('kg')
-                ->columnSpan(2)
-                ->numeric()
-                ->suffix('kg')
-                ->required(),
+                    TextInput::make('quantity')
+                        ->suffix('kg')
+                        ->columnSpan(2)
+                        ->numeric()
+                        ->required(),
 
-            TextInput::make('quantity_on_pallet')
-                ->suffix('kg')
-                ->columnSpan(2) // Kolumna 1
-                ->numeric()
-                ->suffix('kg'),
+                    TextInput::make('quantity_on_pallet')
+                        ->suffix('kg')
+                        ->columnSpan(2)
+                        ->numeric(),
 
-            TextInput::make('price')
-                ->mask(RawJs::make('$money($input)'))
-                ->stripCharacters('.')
-                ->columnSpan(2)
-                ->minValue(0)
-                ->required()
-                ->numeric()
-                ->suffix('zł'),
+                    TextInput::make('lote')
+                        ->columnSpan(2),
 
-            TextInput::make('delivery_price')
-                ->mask(RawJs::make('$money($input)'))
-                ->stripCharacters('.')
-                ->columnSpan(2)
-                ->minValue(0)
-                ->numeric()
-                ->suffix('zł'),
+                    Select::make('country_origin')
+                        ->columnSpan(2)
+                        ->options(Country::getLabels())
+                        ->enum(Country::class)
+                        ->searchable(),
 
-            DatePicker::make('delivery_date')
-                ->columnSpan(2),
+                    DatePicker::make('expiry_date')
+                        ->columnSpan(2)
+                        ->default(today()),
+                ])->columns(6),
 
+            FieldSet::make('Pricing & Currency')
+                ->schema([
+                    Select::make('currency')
+                        ->selectablePlaceholder(false)
+                        ->options([
+                            'pln' => 'ZŁ',
+                            'usd' => 'USD',
+                            'eur' => 'EUR',
+                        ])
+                        ->default('pln')
+                        ->live()
+                        ->columnSpan(2),
 
-            TextInput::make('lote')
-                ->columnSpan(1),
+                    TextInput::make('price')
+                        ->mask(RawJs::make('$money($input)'))
+                        ->stripCharacters('.')
+                        ->columnSpan(2)
+                        ->minValue(0)
+                        ->suffix(function (Get $get) {
+                            return match ($get('currency')) {
+                                'eur' => '€',
+                                'usd' => '$',
+                                default => 'zł',
+                            };
+                        })
+                        ->required()
+                        ->numeric(),
 
-            Select::make('country_origin')
-                ->columnSpan(1)
-                ->options(Country::getLabels())
-                ->enum(Country::class)
-                ->searchable(),
+                    TextInput::make('delivery_price')
+                        ->mask(RawJs::make('$money($input)'))
+                        ->stripCharacters('.')
+                        ->columnSpan(2)
+                        ->minValue(0)
+                        ->numeric()
+                        ->suffix(function (Get $get) {
+                            return match ($get('currency')) {
+                                'eur' => '€',
+                                'usd' => '$',
+                                default => 'zł',
+                            };
+                        }),
+                ])->columns(6),
 
-            DatePicker::make('expiry_date')
-                ->columnSpan(2)
-                ->default(today()),
+            FieldSet::make('deliveryAndPayment')
+                ->label(__('deliveryAndPayment'))
+                ->schema([
+                    DatePicker::make('delivery_date')
+                        ->columnSpan(3),
 
-            Textarea::make('payment_terms')
-                ->columnSpan(2),
-            Textarea::make('comment')
-                ->columnSpan(2),
+                    Textarea::make('payment_terms')
+                        ->columnSpan(3),
+                ])->columns(6),
 
-            FileUpload::make('attachment')
-                ->multiple()
-                ->maxFiles(3)
-                ->columnSpan(4)
-                ->openable()
-                ->downloadable()
-                ->deletable()
-                ->visibility('private')
-                ->directory('attachments')
-                ->disk('public')
-                ->preserveFilenames()
-                ->maxParallelUploads(3),
+            FieldSet::make('additionalInformation')
+                ->label(__('additionalInformation'))
+                ->schema([
+                    Textarea::make('comment')
+                        ->columnSpan(6),
+
+                    FileUpload::make('attachment')
+                        ->multiple()
+                        ->maxFiles(3)
+                        ->columnSpan(6)
+                        ->openable()
+                        ->downloadable()
+                        ->deletable()
+                        ->visibility('private')
+                        ->directory('attachments')
+                        ->disk('public')
+                        ->preserveFilenames()
+                        ->maxParallelUploads(3),
+                ])->columns(6),
         ];
     }
 

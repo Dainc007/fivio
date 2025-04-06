@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->foreignId('address_id')->nullable()->constrained()->cascadeOnDelete();
             $table->integer('quantity');
+            $table->string('currency')->nullable();
             $table->integer('price')->nullable();
             $table->date('delivery_date')->nullable();
             $table->json('attachment')->nullable();

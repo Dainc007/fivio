@@ -67,5 +67,13 @@
     "Quantity on pallet": "Ilość na palecie",
     "Lote": "Partia",
     "Comment": "Uwagi",
-    "yourAccountIsBeingVerified":"Twoje Konto Oczekuje na Weryfikację."
+    "yourAccountIsBeingVerified":"Twoje Konto Oczekuje na Weryfikację.",
+    "Currency": "Waluta",
+    "offerMade": "Oferta Złożona",
+    "editOffer": "Edytuj Oferte",
+    "makeOffer": "Złóż Ofertę",
+    "deliveryAndPayment": "Dostawa i Płatność",
+    "productInformation": "Informacje Produktowe",
+    "pricingAndCurrency": "Cena i Waluta",
+    "additionalInformation": "Dodatkowe Informacje"
 }

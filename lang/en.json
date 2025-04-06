@@ -137,7 +137,16 @@
     "status.rejected": "Rejected",
     "status.pending": "Pending,",
     "delivery_date": "Delivery Term",
-    "yourAccountIsBeingVerified":"Your Account is being verified."
+    "yourAccountIsBeingVerified":"Your Account is being verified.",
+    "Currency": "Currency",
+    "Offer made" : "Offer Made",
+    "offerMade": "Offer Made",
+    "editOffer": "Edit Offer",
+    "makeOffer": "Make Offer",
+    "deliveryAndPayment": "Delivery & Payment",
+    "productInformation": "Product Information",
+    "pricingAndCurrency": "Pricing & Currency",
+    "additionalInformation": "Additional Information"
 
 }
 

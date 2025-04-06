@@ -29,13 +29,8 @@ final class ProductResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-
                     ->required(),
-                //                Forms\Components\TextInput::make('price')
-                //
-                //                    ->required()
-                //                    ->numeric()
-                //                    ->prefix('$'),
+
                 Forms\Components\Select::make('category_id')
                     ->searchable()
                     ->preload()

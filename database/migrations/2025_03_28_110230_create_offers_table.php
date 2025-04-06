@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->integer('price');
+            $table->string('currency')->nullable();
             $table->string('delivery_price')->nullable();
             $table->integer('quantity');
             $table->integer('quantity_on_pallet')->nullable();
