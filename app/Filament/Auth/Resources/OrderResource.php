@@ -83,8 +83,8 @@ final class OrderResource extends Resource
                         );
 
                         Notification::make()
-                            ->title('Sukces')
-                            ->body('Akcja zakończona sukcesem')
+                            ->title(__('success'))
+                            ->body(__('actionSuccessful'))
                             ->success()->send();
                     }),
                 Tables\Actions\Action::make('offerMade')
@@ -116,8 +116,8 @@ final class OrderResource extends Resource
                             ->where('user_id', auth()->user()->id)
                             ->update($data);
                         Notification::make()
-                            ->title('Sukces')
-                            ->body('Akcja zakończona sukcesem')
+                            ->title(__('success'))
+                            ->body(__('actionSuccessful'))
                             ->success()->send();
                     }),
             ])

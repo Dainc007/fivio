@@ -80,8 +80,8 @@ final class OffersRelationManager extends RelationManager
                         );
 
                         Notification::make()
-                            ->title('Sukces')
-                            ->body('Akcja zakończona sukcesem')
+                            ->title(__('success'))
+                            ->body(__('actionSuccessful'))
                             ->success()->send();
 
                     }),

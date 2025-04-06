@@ -75,5 +75,7 @@
     "deliveryAndPayment": "Dostawa i Płatność",
     "productInformation": "Informacje Produktowe",
     "pricingAndCurrency": "Cena i Waluta",
-    "additionalInformation": "Dodatkowe Informacje"
+    "additionalInformation": "Dodatkowe Informacje",
+    "success": "Sukces",
+    "actionSuccessful": "Akcja zakończona sukcesem"
 }

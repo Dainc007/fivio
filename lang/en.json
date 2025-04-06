@@ -146,7 +146,9 @@
     "deliveryAndPayment": "Delivery & Payment",
     "productInformation": "Product Information",
     "pricingAndCurrency": "Pricing & Currency",
-    "additionalInformation": "Additional Information"
+    "additionalInformation": "Additional Information",
+    "success": "Success",
+    "actionSuccessful": "Action Finished Successfully"
 
 }
 
