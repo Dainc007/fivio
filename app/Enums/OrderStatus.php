@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Enums;
 
 enum OrderStatus: string
@@ -7,6 +9,15 @@ enum OrderStatus: string
     case ACTIVE = 'active';
     case FINISHED = 'finished';
     case CANCELLED = 'cancelled';
+
+    public static function withLabels(): array
+    {
+        return [
+            self::ACTIVE->value => self::ACTIVE->label(),
+            self::FINISHED->value => self::FINISHED->label(),
+            self::CANCELLED->value => self::CANCELLED->label(),
+        ];
+    }
 
     public function color(): string
     {
@@ -25,14 +36,5 @@ enum OrderStatus: string
             self::FINISHED => __('status.finished'),
             self::CANCELLED => __('status.cancelled'),
         };
-    }
-
-    public static function withLabels(): array
-    {
-        return [
-            self::ACTIVE->value => self::ACTIVE->label(),
-            self::FINISHED->value => self::FINISHED->label(),
-            self::CANCELLED->value => self::CANCELLED->label(),
-        ];
     }
 }

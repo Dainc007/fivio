@@ -15,8 +15,7 @@ final class OrderObserver
      */
     public function created(Order $order): void
     {
-        $users = User::all();
-        foreach ($users as $user) {
+        foreach (User::cursor() as $user) {
             $user->notify(new OrderCreated($order));
         }
     }

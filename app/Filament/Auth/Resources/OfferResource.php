@@ -41,14 +41,13 @@ final class OfferResource extends Resource
 
     public static function table(Table $table): Table
     {
-        if (!auth()->user()->has_access) {
+        if (! auth()->user()->has_access) {
             $table->heading(__('yourAccountIsBeingVerified'));
         }
 
-
         return $table
             ->modifyQueryUsing(
-                fn(Builder $query) => $query->where('user_id', auth()->id()),
+                fn (Builder $query) => $query->where('user_id', auth()->id()),
             )
             ->striped()
             ->columns(
@@ -62,7 +61,7 @@ final class OfferResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-//                                Tables\Actions\DeleteAction::make(),
+                //                                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -79,7 +78,7 @@ final class OfferResource extends Resource
     }
 
     /**
-     * @return Tables\Columns\TextColumn[]
+     * @return TextColumn[]
      */
     public static function getColumns(): array
     {
@@ -89,9 +88,10 @@ final class OfferResource extends Resource
                 TextColumn::make('order_id')
                     ->hidden()
                     ->numeric(),
-                TextColumn::make('price')
-                    ->money(),
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('price')->money(function ($record) {
+                    return $record->currency ?? 'pln';
+                }),
+                TextColumn::make('status')
                     ->badge()
                     ->color(fn (Offer $record): string => OfferStatus::from($record->status)->color()),
 
@@ -112,14 +112,24 @@ final class OfferResource extends Resource
         return __('My Offers');
     }
 
+    public static function getLabel(): ?string
+    {
+        return __('My Offers');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('My Offers');
+    }
+
     private static function getFormFields(): array
     {
         return [
-            FieldSet::make('Product Information')
+            Fieldset::make('Product Information')
                 ->schema([
                     TextInput::make('product')
                         ->columnSpan(4)
-                        ->default(fn($record) => $record->product?->name ?? 'No product')
+                        ->default(fn ($record) => $record->product?->name ?? 'No product')
                         ->readOnly()
                         ->disabled(),
 
@@ -148,7 +158,7 @@ final class OfferResource extends Resource
                         ->default(today()),
                 ])->columns(6),
 
-            FieldSet::make('Pricing & Currency')
+            Fieldset::make('Pricing & Currency')
                 ->schema([
                     Select::make('currency')
                         ->selectablePlaceholder(false)
@@ -162,11 +172,9 @@ final class OfferResource extends Resource
                         ->columnSpan(2),
 
                     TextInput::make('price')
-                        ->mask(RawJs::make('$money($input)'))
-                        ->stripCharacters('.')
                         ->columnSpan(2)
                         ->minValue(0)
-                        ->suffix(function (Get $get) {
+                        ->suffix(function (Get $get): string {
                             return match ($get('currency')) {
                                 'eur' => '€',
                                 'usd' => '$',
@@ -177,12 +185,11 @@ final class OfferResource extends Resource
                         ->numeric(),
 
                     TextInput::make('delivery_price')
-                        ->mask(RawJs::make('$money($input)'))
-                        ->stripCharacters('.')
                         ->columnSpan(2)
-                        ->minValue(0)
+                        ->mask(RawJs::make('$money($input)'))
+                        ->stripCharacters(',')
                         ->numeric()
-                        ->suffix(function (Get $get) {
+                        ->suffix(function (Get $get): string {
                             return match ($get('currency')) {
                                 'eur' => '€',
                                 'usd' => '$',
@@ -191,7 +198,7 @@ final class OfferResource extends Resource
                         }),
                 ])->columns(6),
 
-            FieldSet::make('deliveryAndPayment')
+            Fieldset::make('deliveryAndPayment')
                 ->label(__('deliveryAndPayment'))
                 ->schema([
                     DatePicker::make('delivery_date')
@@ -201,7 +208,7 @@ final class OfferResource extends Resource
                         ->columnSpan(3),
                 ])->columns(6),
 
-            FieldSet::make('additionalInformation')
+            Fieldset::make('additionalInformation')
                 ->label(__('additionalInformation'))
                 ->schema([
                     Textarea::make('comment')
@@ -221,15 +228,5 @@ final class OfferResource extends Resource
                         ->maxParallelUploads(3),
                 ])->columns(6),
         ];
-    }
-
-    public static function getLabel(): ?string
-    {
-        return __('My Offers');
-    }
-
-    public static function getPluralLabel(): string
-    {
-        return __('My Offers');
     }
 }

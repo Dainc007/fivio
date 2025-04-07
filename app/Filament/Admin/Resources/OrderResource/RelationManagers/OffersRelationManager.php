@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources\OrderResource\RelationManagers;
 
+use App\Enums\Country;
 use App\Enums\OfferStatus;
 use App\Enums\OrderStatus;
 use App\Models\Offer;
-use App\Models\Order;
 use App\Notifications\OrderAccepted;
-use Filament\Forms;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -38,20 +36,20 @@ final class OffersRelationManager extends RelationManager
                 TextColumn::make('status')
                     ->badge()
                     ->color(fn ($record): string => OfferStatus::from($record->status)->color())
-                    ->description(fn($record) => $record->user->name),
+                    ->description(fn ($record) => $record->user->name),
                 TextColumn::make('price')
-                    ->description(fn($record) => $record->comment)->wrap()->lineClamp(3)->tooltip(
-                        fn($record) => $record->payment_terms
+                    ->description(fn ($record) => $record->comment)->wrap()->lineClamp(3)->tooltip(
+                        fn ($record) => $record->payment_terms
                     )
                     ->money('PLN'),
                 TextColumn::make('delivery_price')->money('PLN'),
                 TextColumn::make('quantity')
-                    ->tooltip(fn($record) => __('quantityAndOnPalet'))
-                    ->description(fn($record) => $record->quantity_on_pallet),
-                TextColumn::make('country_origin'),
+                    ->tooltip(fn ($record) => __('quantityAndOnPalet'))
+                    ->description(fn ($record) => $record->quantity_on_pallet),
+                TextColumn::make('country_origin')->formatStateUsing(fn ($state) => Country::from($state)->name),
                 TextColumn::make('lote'),
                 TextColumn::make('expiry_date')->dateTimeTooltip(),
-                TextColumn::make('payment_terms')->wrap()->lineClamp(3)->tooltip(fn($record) => $record->payment_terms),
+                TextColumn::make('payment_terms')->wrap()->lineClamp(3)->tooltip(fn ($record) => $record->payment_terms),
             ])
             ->filters([
                 SelectFilter::make('status')
@@ -59,11 +57,11 @@ final class OffersRelationManager extends RelationManager
                     ->options(OfferStatus::withLabels()),
             ])
             ->headerActions([
-//                    Tables\Actions\CreateAction::make(),
+                //                    Tables\Actions\CreateAction::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->visible(fn(Offer $offer): bool => $offer->order->status === OrderStatus::ACTIVE->value)
+                    ->visible(fn (Offer $offer): bool => $offer->order->status === OrderStatus::ACTIVE->value)
                     ->color(Color::Fuchsia)
                     ->icon('heroicon-o-users')
                     ->label(__('choseOffer'))
@@ -87,11 +85,9 @@ final class OffersRelationManager extends RelationManager
                     }),
             ], position: Tables\Enums\ActionsPosition::BeforeColumns)
             ->bulkActions([
-//                    Tables\Actions\BulkActionGroup::make([
-//                        Tables\Actions\DeleteBulkAction::make(),
-//                    ]),
+                //                    Tables\Actions\BulkActionGroup::make([
+                //                        Tables\Actions\DeleteBulkAction::make(),
+                //                    ]),
             ]);
     }
-
-
 }

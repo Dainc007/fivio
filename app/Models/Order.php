@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Casts\MoneyCast;
-use App\Enums\OrderStatus;
 use App\Observers\OrderObserver;
 use App\Traits\Model\HasFiles;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -17,8 +16,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[ObservedBy([OrderObserver::class])]
 final class Order extends Model
 {
-    use HasFiles,
-        HasFactory;
+    use HasFactory,
+        HasFiles;
 
     protected $casts = [
         'attachment' => 'array',

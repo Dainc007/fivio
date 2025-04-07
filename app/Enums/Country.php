@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Enums;
 
@@ -33,6 +34,30 @@ enum Country: string
     case SPAIN = 'ES';
     case SWEDEN = 'SE';
 
+    public static function getLabels(): array
+    {
+        return array_reduce(
+            self::cases(),
+            function (array $labels, self $country) {
+                $labels[$country->value] = $country->getLabel();
+
+                return $labels;
+            },
+            []
+        );
+    }
+
+    public static function fromCode(string $code): ?self
+    {
+        foreach (self::cases() as $country) {
+            if ($country->value === mb_strtoupper($code)) {
+                return $country;
+            }
+        }
+
+        return null;
+    }
+
     public function getLabel(): string
     {
         return match ($this) {
@@ -64,17 +89,5 @@ enum Country: string
             self::SPAIN => 'Spain',
             self::SWEDEN => 'Sweden',
         };
-    }
-
-    public static function getLabels(): array
-    {
-        return array_reduce(
-            self::cases(),
-            function (array $labels, self $country) {
-                $labels[$country->value] = $country->getLabel();
-                return $labels;
-            },
-            []
-        );
     }
 }

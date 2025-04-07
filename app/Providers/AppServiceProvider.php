@@ -46,7 +46,7 @@ final class AppServiceProvider extends ServiceProvider
 
         Model::shouldBeStrict($isProduction);
         Model::unguard();
-//        DB::prohibitDestructiveCommands($isProduction);
+        //        DB::prohibitDestructiveCommands($isProduction);
         URL::forceScheme('https');
 
         if (! $isProduction) {
@@ -65,15 +65,14 @@ final class AppServiceProvider extends ServiceProvider
 
         $this->setDefaultFilamentSettings();
 
-        LanguageSwitch::configureUsing(function (LanguageSwitch $languageSwitch) {
+        LanguageSwitch::configureUsing(function (LanguageSwitch $languageSwitch): void {
             $languageSwitch
                 ->locales(['en', 'pl'])
-            ->circular()
-            ;
+                ->circular();
         });
     }
 
-    protected function setDefaultFilamentSettings(): void
+    private function setDefaultFilamentSettings(): void
     {
         Column::configureUsing(function (Column $column): void {
             $column

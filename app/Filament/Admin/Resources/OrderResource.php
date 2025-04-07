@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Admin\Resources;
 
-use App\Enums\OfferStatus;
 use App\Enums\OrderStatus;
 use App\Filament\Admin\Resources\OrderResource\Pages;
 use App\Filament\Admin\Resources\OrderResource\RelationManagers;
@@ -10,18 +11,15 @@ use App\Models\Address;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
-use App\Notifications\OrderAccepted;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
-use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
-class OrderResource extends Resource
+final class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
 
@@ -195,5 +193,4 @@ class OrderResource extends Resource
                 ->toggleable(isToggledHiddenByDefault: true),
         ];
     }
-
 }

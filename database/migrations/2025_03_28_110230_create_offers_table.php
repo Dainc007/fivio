@@ -18,13 +18,14 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->integer('price');
+            $table->integer('delivery_price')->nullable();
             $table->string('currency')->nullable();
-            $table->string('delivery_price')->nullable();
             $table->integer('quantity');
             $table->integer('quantity_on_pallet')->nullable();
             $table->json('attachment')->nullable();
             $table->string('country_origin')->nullable();
             $table->date('expiry_date')->nullable();
+            $table->date('delivery_date')->nullable();
             $table->string('lote')->nullable();
             $table->text('payment_terms')->nullable();
             $table->text('comment')->nullable();

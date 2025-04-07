@@ -30,7 +30,7 @@ final class ProductFactory extends Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'category_id' => \App\Models\Category::all()->random()->id,
+                'category_id' => Category::all()->random()->id,
             ];
         });
     }

@@ -41,6 +41,6 @@ final class Register extends BaseRegister
 
     private function getPhoneNumberFormComponent(): TextInput
     {
-       return TextInput::make('phone_number')->tel()->prefix('+48');
+        return TextInput::make('phone_number')->tel()->prefix('+48');
     }
 }

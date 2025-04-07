@@ -14,9 +14,9 @@ final class MoneyCast implements CastsAttributes
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function get(Model $model, string $key, mixed $value, array $attributes): mixed
+    public function get(Model $model, string $key, $value, array $attributes): int|float
     {
-        return $value !== null ? $value / 100 : null;
+        return $value / 100;
     }
 
     /**
@@ -24,8 +24,8 @@ final class MoneyCast implements CastsAttributes
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function set(Model $model, string $key, mixed $value, array $attributes): mixed
+    public function set(Model $model, string $key, $value, array $attributes): int|float
     {
-        return $value !== null ? intval($value * 100) : null;
+        return round($value * 100, 2);
     }
 }

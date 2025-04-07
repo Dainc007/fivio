@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\Filament\Auth\Resources;
 
 use App\Enums\Country;
-use App\Enums\OfferStatus;
 use App\Enums\OrderStatus;
 use App\Filament\Auth\Resources\OrderResource\Pages;
 use App\Models\Offer;
 use App\Models\Order;
-use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\FileUpload;
@@ -24,6 +22,7 @@ use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Support\RawJs;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -49,12 +48,12 @@ final class OrderResource extends Resource
     {
         $columns = self::getColumns();
 
-        if (!auth()->user()->has_access) {
+        if (! auth()->user()->has_access) {
             $table->heading(__('yourAccountIsBeingVerified'));
         }
 
         return $table
-            ->modifyQueryUsing(fn(Builder $query) => $query->withExists('userOffers'))
+            ->modifyQueryUsing(fn (Builder $query) => $query->withExists('userOffers'))
             ->striped()
             ->columns($columns)
             ->filters([
@@ -66,7 +65,7 @@ final class OrderResource extends Resource
                 Tables\Actions\Action::make('offer')
                     ->label(__('makeOffer'))
                     ->visible(function ($record): bool {
-                        return auth()->user()->has_access && !$record->userHasSubmittedOffer && $record->status === OrderStatus::ACTIVE->value;
+                        return auth()->user()->has_access && ! $record->userHasSubmittedOffer && $record->status === OrderStatus::ACTIVE->value;
                     })
                     ->icon('heroicon-o-plus')
                     ->color(Color::Fuchsia)
@@ -76,9 +75,9 @@ final class OrderResource extends Resource
                         $data['order_id'] = $record->id;
                         $data['user_id'] = auth()->user()->id;
                         Offer::updateOrCreate([
-                                'order_id' => $data['order_id'],
-                                'user_id' => $data['user_id'],
-                            ],
+                            'order_id' => $data['order_id'],
+                            'user_id' => $data['user_id'],
+                        ],
                             $data
                         );
 
@@ -109,12 +108,19 @@ final class OrderResource extends Resource
                             ->where('user_id', auth()->user()->id)
                             ->firstOrFail();
                         $offer->product = $record->product->name;
+
                         return $offer->toArray();
                     })
                     ->after(function (array $data, $record): void {
-                        Offer::where('order_id', $record->id)
+                        $offer = Offer::where('order_id', $record->id)
                             ->where('user_id', auth()->user()->id)
-                            ->update($data);
+                            ->firstOrFail();
+
+                        if ($offer) {
+                            $offer->fill($data);
+                            $offer->save();
+                        }
+
                         Notification::make()
                             ->title(__('success'))
                             ->body(__('actionSuccessful'))
@@ -131,34 +137,30 @@ final class OrderResource extends Resource
         ];
     }
 
-    /**
-     * @return Tables\Columns\TextColumn[]
-     */
     public static function getColumns(): array
     {
         $columns = [];
 
         if (auth()->user()->has_access) {
             return [
-                Tables\Columns\TextColumn::make('order_id')
+                TextColumn::make('order_id')
                     ->hidden(),
-                Tables\Columns\TextColumn::make('product.name')
-                    ->numeric(),
-                Tables\Columns\TextColumn::make('quantity')
+                TextColumn::make('product.name'),
+                TextColumn::make('quantity')
                     ->suffix('kg')
                     ->numeric(),
-                Tables\Columns\TextColumn::make('delivery_date')
+                TextColumn::make('delivery_date')
                     ->date(),
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->badge()
-                    ->color(fn(Order $record): string => OrderStatus::from($record->status)->color()),
-                Tables\Columns\TextColumn::make('address.full_address')
+                    ->color(fn (Order $record): string => OrderStatus::from($record->status)->color()),
+                TextColumn::make('address.full_address')
                     ->limit(50)
                     ->wrap(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->toggleable(isToggledHiddenByDefault: true),
             ];
@@ -185,12 +187,12 @@ final class OrderResource extends Resource
     private static function getFormFields(): array
     {
         return [
-            FieldSet::make('productInformation')
+            Fieldset::make('productInformation')
                 ->label(__('productInformation'))
                 ->schema([
                     TextInput::make('product')
                         ->columnSpan(4)
-                        ->default(fn($record) => $record->product?->name ?? 'No product')
+                        ->default(fn ($record) => $record->product?->name ?? 'No product')
                         ->readOnly()
                         ->disabled(),
 
@@ -219,7 +221,7 @@ final class OrderResource extends Resource
                         ->default(today()),
                 ])->columns(6),
 
-            FieldSet::make('pricingAndCurrency')
+            Fieldset::make('pricingAndCurrency')
                 ->label(__('pricingAndCurrency'))
                 ->schema([
                     Select::make('currency')
@@ -229,18 +231,16 @@ final class OrderResource extends Resource
                             'usd' => 'USD',
                             'eur' => 'EUR',
                         ])
-                        ->default('pln')
                         ->live()
-                        ->columnSpan(2),
+                        ->columnSpan(1),
 
                     TextInput::make('price')
                         ->mask(RawJs::make('$money($input)'))
-                        ->stripCharacters('.')
-                        ->columnSpan(2)
-                        ->minValue(0)
-                        ->required()
+                        ->stripCharacters(',')
                         ->numeric()
-                        ->suffix(function (Get $get) {
+
+                        ->columnSpan(3)
+                        ->suffix(function (Get $get): string {
                             return match ($get('currency')) {
                                 'eur' => '€',
                                 'usd' => '$',
@@ -250,11 +250,11 @@ final class OrderResource extends Resource
 
                     TextInput::make('delivery_price')
                         ->mask(RawJs::make('$money($input)'))
-                        ->stripCharacters('.')
-                        ->columnSpan(2)
-                        ->minValue(0)
+                        ->stripCharacters(',')
                         ->numeric()
-                        ->suffix(function (Get $get) {
+
+                        ->columnSpan(2)
+                        ->suffix(function (Get $get): string {
                             return match ($get('currency')) {
                                 'eur' => '€',
                                 'usd' => '$',
@@ -263,14 +263,17 @@ final class OrderResource extends Resource
                         }),
                 ])->columns(6),
 
-            FieldSet::make('DeliveryAndPayment')
+            Fieldset::make('DeliveryAndPayment')
                 ->label(__('deliveryAndPayment'))
                 ->schema([
+                    DatePicker::make('delivery_date')
+                        ->columnSpan(5),
+
                     Textarea::make('payment_terms')
                         ->columnSpan(6),
                 ])->columns(6),
 
-            FieldSet::make('additionalInformation')
+            Fieldset::make('additionalInformation')
                 ->label(__('additionalInformation'))
                 ->schema([
                     Textarea::make('comment')
@@ -291,6 +294,4 @@ final class OrderResource extends Resource
                 ])->columns(6),
         ];
     }
-
-
 }

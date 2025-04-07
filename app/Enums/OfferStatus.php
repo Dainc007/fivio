@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Enums;
 
 enum OfferStatus: string
@@ -7,6 +9,15 @@ enum OfferStatus: string
     case PENDING = 'pending';
     case REJECTED = 'rejected';
     case ACCEPTED = 'accepted';
+
+    public static function withLabels(): array
+    {
+        return [
+            self::ACCEPTED->value => self::ACCEPTED->label(),
+            self::PENDING->value => self::PENDING->label(),
+            self::REJECTED->value => self::REJECTED->label(),
+        ];
+    }
 
     public function color(): string
     {
@@ -25,14 +36,5 @@ enum OfferStatus: string
             self::ACCEPTED => __('status.accepted'),
             self::REJECTED => __('status.rejected'),
         };
-    }
-
-    public static function withLabels(): array
-    {
-        return [
-            self::ACCEPTED->value => self::ACCEPTED->label(),
-            self::PENDING->value => self::PENDING->label(),
-            self::REJECTED->value => self::REJECTED->label(),
-        ];
     }
 }

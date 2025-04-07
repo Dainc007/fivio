@@ -77,5 +77,6 @@
     "pricingAndCurrency": "Cena i Waluta",
     "additionalInformation": "Dodatkowe Informacje",
     "success": "Sukces",
-    "actionSuccessful": "Akcja zakończona sukcesem"
+    "actionSuccessful": "Akcja zakończona sukcesem",
+    "quantityAndOnPalet": "Ilość / Ilość na Palecie"
 }

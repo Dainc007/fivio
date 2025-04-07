@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\Offer;
@@ -7,15 +9,16 @@ use App\Models\Order;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class OfferFactory extends Factory
+final class OfferFactory extends Factory
 {
     protected $model = Offer::class;
 
     public function definition(): array
     {
-        $maxOrderId =  Order::count();
+        $maxOrderId = Order::count();
+
         return [
-            'order_id' => rand(1,$maxOrderId),
+            'order_id' => rand(1, $maxOrderId),
             'user_id' => User::factory(),
             'price' => $this->faker->randomNumber(4),
             'delivery_price' => $this->faker->randomNumber(3),
@@ -23,7 +26,7 @@ class OfferFactory extends Factory
             'quantity_on_pallet' => $this->faker->numberBetween(10, 50),
             'attachment' => null, // Can be set using ->hasAttachment()
             'country_origin' => $this->faker->country(),
-            'lote' => 'LOT-' . $this->faker->randomNumber(6),
+            'lote' => 'LOT-'.$this->faker->randomNumber(6),
             'payment_terms' => $this->faker->paragraph,
             'status' => 'pending',
         ];

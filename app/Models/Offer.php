@@ -12,8 +12,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 final class Offer extends Model
 {
+    use HasFactory,
+        HasFiles;
 
-    use HasFiles, HasFactory;
     protected $casts = [
         'price' => MoneyCast::class,
         'delivery_price' => MoneyCast::class,
@@ -29,5 +30,4 @@ final class Offer extends Model
     {
         return $this->belongsTo(User::class);
     }
-
 }
