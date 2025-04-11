@@ -78,5 +78,6 @@
     "additionalInformation": "Dodatkowe Informacje",
     "success": "Sukces",
     "actionSuccessful": "Akcja zakończona sukcesem",
-    "quantityAndOnPalet": "Ilość / Ilość na Palecie"
+    "quantityAndOnPalet": "Ilość / Ilość na Palecie",
+    "deliveryPriceTooltip": "Jeśli cena zawiera transport wpisz 0. Wszystkie uwagi odnośnie transportu wpisz w komentarzu."
 }

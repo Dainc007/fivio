@@ -17,6 +17,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
@@ -249,10 +250,10 @@ final class OrderResource extends Resource
                         }),
 
                     TextInput::make('delivery_price')
+                        ->hintIcon('heroicon-m-question-mark-circle', tooltip: __('deliveryPriceTooltip'))
                         ->mask(RawJs::make('$money($input)'))
                         ->stripCharacters(',')
                         ->numeric()
-
                         ->columnSpan(2)
                         ->suffix(function (Get $get): string {
                             return match ($get('currency')) {

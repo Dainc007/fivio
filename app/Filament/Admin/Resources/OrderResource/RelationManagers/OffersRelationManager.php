@@ -17,6 +17,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 final class OffersRelationManager extends RelationManager
 {
@@ -31,6 +32,7 @@ final class OffersRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query->with('order.offers'))
             ->recordTitleAttribute('price')
             ->columns([
                 TextColumn::make('status')
@@ -41,7 +43,7 @@ final class OffersRelationManager extends RelationManager
                     ->description(fn ($record) => $record->comment)->wrap()->lineClamp(3)->tooltip(
                         fn ($record) => $record->payment_terms
                     )
-                    ->money('PLN'),
+                    ->money(fn ($record) => $record->currency),
                 TextColumn::make('delivery_price')->money('PLN'),
                 TextColumn::make('quantity')
                     ->tooltip(fn ($record) => __('quantityAndOnPalet'))
