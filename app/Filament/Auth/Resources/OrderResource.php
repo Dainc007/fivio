@@ -99,7 +99,7 @@ final class OrderResource extends Resource
                     ->icon('heroicon-o-pencil')
                     ->color(Color::Blue)
                     ->visible(function ($record) {
-                        return $record->userHasSubmittedOffer;
+                        return $record->userHasSubmittedOffer && $record->status === OrderStatus::ACTIVE->value;
                     })
                     ->modal()
                     ->form(self::getFormFields())

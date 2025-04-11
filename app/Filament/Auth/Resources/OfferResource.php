@@ -60,7 +60,7 @@ final class OfferResource extends Resource
 
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->visible(fn(Offer $record) => $record->status === OfferStatus::PENDING),
+                Tables\Actions\EditAction::make()->visible(fn(Offer $record) => $record->status === OfferStatus::PENDING->value),
                 //                                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
