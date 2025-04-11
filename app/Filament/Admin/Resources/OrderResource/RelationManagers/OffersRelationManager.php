@@ -32,7 +32,7 @@ final class OffersRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn (Builder $query) => $query->with('order.offers'))
+            ->modifyQueryUsing(fn (Builder $query) => $query->with(['order.offers', 'user']))
             ->recordTitleAttribute('price')
             ->columns([
                 TextColumn::make('status')
