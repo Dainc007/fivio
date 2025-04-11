@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
+use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
@@ -15,10 +16,9 @@ final class OrderCreated extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct()
-    {
-        //
-    }
+    public function __construct(
+        private readonly Order $order
+    ) {}
 
     /**
      * Get the notification's delivery channels.
@@ -36,10 +36,13 @@ final class OrderCreated extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject(__CLASS__)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->subject(__('orderCreatedSubject'))
+            ->greeting(__('orderCreatedGreeting'))
+            ->line(__('orderCreatedLine1'))
+            ->line($this->order->product->name.' '.$this->order->quantity . ' kg')
+            ->line(__('orderCreatedLine2'))
+            ->action("Link", url('/auth/orders'))
+            ->salutation(__('orderCreatedSalutation'));
     }
 
     /**

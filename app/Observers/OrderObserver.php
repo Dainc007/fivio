@@ -7,6 +7,7 @@ namespace App\Observers;
 use App\Models\Order;
 use App\Models\User;
 use App\Notifications\OrderCreated;
+use Illuminate\Support\Facades\Notification;
 
 final class OrderObserver
 {
@@ -15,32 +16,10 @@ final class OrderObserver
      */
     public function created(Order $order): void
     {
-        foreach (User::cursor() as $user) {
+        $order->load('product');
+
+        User::where('has_access', true)->cursor()->each(function ($user) use ($order) {
             $user->notify(new OrderCreated($order));
-        }
-    }
-
-    /**
-     * Handle the Order "deleted" event.
-     */
-    public function deleted(): void
-    {
-        //
-    }
-
-    /**
-     * Handle the order "restored" event.
-     */
-    public function restored(): void
-    {
-        //
-    }
-
-    /**
-     * Handle the order "force deleted" event.
-     */
-    public function forceDeleted(): void
-    {
-        //
+        });
     }
 }

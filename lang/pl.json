@@ -79,5 +79,16 @@
     "success": "Sukces",
     "actionSuccessful": "Akcja zakończona sukcesem",
     "quantityAndOnPalet": "Ilość / Ilość na Palecie",
-    "deliveryPriceTooltip": "Jeśli cena zawiera transport wpisz 0. Wszystkie uwagi odnośnie transportu wpisz w komentarzu."
+    "deliveryPriceTooltip": "Jeśli cena zawiera transport wpisz 0. Wszystkie uwagi odnośnie transportu wpisz w komentarzu.",
+    "orderAcceptedSubject": "Twoja oferta została wybrana",
+    "orderAcceptedGreeting": "Dzień Dobry",
+    "orderAcceptedLine1": "Twoja oferta wygrała",
+    "orderAcceptedLine2": "Proszę o realizację oferty",
+    "orderAcceptedSalutation": "Pozdrawiam",
+
+    "orderCreatedSubject": "Pojawiło się nowe zapotrzebowanie",
+    "orderCreatedGreeting": "Dzień Dobry",
+    "orderCreatedLine1": "Na platformie pojawiło się zapotrzebowanie na:",
+    "orderCreatedLine2": "Zapraszam do składania ofert",
+    "orderCreatedSalutation": "Pozdrawiam"
 }

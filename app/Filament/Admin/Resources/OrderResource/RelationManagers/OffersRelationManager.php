@@ -44,7 +44,8 @@ final class OffersRelationManager extends RelationManager
                         fn ($record) => $record->payment_terms
                     )
                     ->money(fn ($record) => $record->currency),
-                TextColumn::make('delivery_price')->money('PLN'),
+                TextColumn::make('delivery_price')
+                    ->money(fn ($record) => $record->currency),
                 TextColumn::make('quantity')
                     ->tooltip(fn ($record) => __('quantityAndOnPalet'))
                     ->description(fn ($record) => $record->quantity_on_pallet),
@@ -73,7 +74,7 @@ final class OffersRelationManager extends RelationManager
                     ->action(function ($record): void {
                         $record->order->update(['status' => OrderStatus::FINISHED->value]);
                         $record->update(['status' => OfferStatus::ACCEPTED->value]);
-                        $record->user->notify(new OrderAccepted());
+                        $record->user->notify(new OrderAccepted($record));
 
                         $record->order->offers()->where('status', OfferStatus::PENDING->value)->update(
                             ['status' => OfferStatus::REJECTED->value]

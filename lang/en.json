@@ -149,6 +149,20 @@
     "additionalInformation": "Additional Information",
     "success": "Success",
     "actionSuccessful": "Action Finished Successfully",
-    "quantityAndOnPalet": "Quantity / Quantity On Pallet"
+    "quantityAndOnPalet": "Quantity / Quantity On Pallet",
+    "deliveryPriceTooltip": "If the price includes shipping, enter 0. Please include all comments regarding shipping in the comments section.",
+
+    "orderAcceptedSubject": "Your offer has been selected",
+    "orderAcceptedGreeting": "Good Morning",
+    "orderAcceptedLine1": "Your offer has won",
+    "orderAcceptedLine2": "Please proceed with the offer",
+    "orderAcceptedSalutation": "Best regards",
+
+    "orderCreatedSubject": "A new request has appeared",
+    "orderCreatedGreeting": "Good Morning",
+    "orderCreatedLine1": "There is a request on the platform for:",
+    "orderCreatedLine2": "Feel free to submit your offers:",
+    "orderCreatedSalutation": "Best regards"
+
 }
 
