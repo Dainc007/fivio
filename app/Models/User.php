@@ -42,7 +42,7 @@ final class User extends Authenticatable implements FilamentUser
 
     public function isAdmin(): bool
     {
-        return auth()->user()->is_admin;
+        return auth()->user()->is_admin === 1;
     }
 
     public function canAccessPanel(Panel $panel): bool
